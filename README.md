@@ -1,2 +1,3 @@
 # JSA4Java
-JSAppSugar的Java实现
+The implementation of JSAppSugar for Cocoa
+
