@@ -1,36 +1,29 @@
 package tech.iopi.jsa;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.BeforeClass;
+
+import tech.iopi.jsa.impl.JSA4Java;
+import tech.iopi.jsa.JSAppSugar;
 
 /**
  * Unit test for simple App.
  */
-public class JSA4JavaTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public JSA4JavaTest( String testName )
-    {
-        super( testName );
-    }
+public class JSA4JavaTest{
+	
+	private static JSAppSugar jsa;
+	
+	@BeforeClass
+	public static void beforeClass() {
+		JSA4Java jsa4Java = new JSA4Java();
+		jsa4Java.startEngine();
+		jsa = jsa4Java;
+	}
+	
+	@Test
+	public void testLoadJSModule() {
+		assertNotNull(jsa);
+	}
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( JSA4JavaTest.class );
-    }
-
-    
-    public void testLoadJSModule()
-    {
-        assertTrue( true );
-    }
 }
