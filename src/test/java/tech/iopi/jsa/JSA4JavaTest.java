@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 
 import tech.iopi.jsa.impl.JSA4Java;
 import tech.iopi.jsa.JSAppSugar;
+import tech.iopi.jsa.JSAObject;
 
 /**
  * Unit test for simple App.
@@ -24,6 +25,13 @@ public class JSA4JavaTest{
 	@Test
 	public void testLoadJSModule() {
 		assertNotNull(jsa);
+	}
+	
+	@Test
+	public void newJSClassTest() {
+		JSAObject testObject = jsa.newClass("test.jsa.TestObject","a");
+		String a = (String)testObject.invokeMethod("getA");
+		assertEquals("a", a);
 	}
 
 }

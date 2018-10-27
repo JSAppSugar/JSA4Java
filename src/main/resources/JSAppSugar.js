@@ -108,6 +108,16 @@ JSA.$global = this;
 			f_applyClass(className,JSAClass);
 		}
 	};
+	JSA.$newClass = function(className,args){
+		var cls = f_findClass(className);
+		var o = undefined;
+		if(cls){
+			o = new cls();
+			o.$init.apply(o,args);
+		}
+		return o;
+	};
 }());
 
 $class = JSA.$class;
+$newClass = JSA.$newClass;

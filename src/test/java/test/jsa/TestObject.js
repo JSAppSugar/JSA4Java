@@ -5,5 +5,8 @@ $class("test.jsa.TestObject",{
 		if(a){
 			this.a = a;
 		}
-	}
+	},
+	getA:function(){
+		return this.a;
+	},
 });
