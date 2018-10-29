@@ -29,18 +29,30 @@ public class JSA4Java implements JSAppSugar {
 		_loadedClasses = new HashSet<>();
 	}
 	
+	/**
+	 * Set up a JS class loader that you implement on your own.
+	 * @param loader A implementation of JSClassLoader.
+	 */
 	public void setJSClassLoader(JSClassLoader loader) {
 		_jsClassLoader = loader;
 	}
 	
 	/**
-	 * start the engine
+	 * start engine
 	 */
 	public void startEngine() {
+		this.startEngine(new DefaultJSClassLoader());
+	}
+	
+	
+	/**
+	 * Start engine with given JSClassLoader
+	 * @param loader A implementation of JSClassLoader.
+	 */
+	public void startEngine(JSClassLoader loader) {
 		if(_scope == null) {
 			Context cx = Context.enter();
-			DefaultJSClassLoader defaultLoader = new DefaultJSClassLoader();
-			String jsaScript = defaultLoader.loadJSClass("JSAppSugar");
+			String jsaScript = loader.loadJSClass("JSAppSugar");
 			try {
 				_scope = cx.initStandardObjects();
 				cx.evaluateString(_scope, jsaScript, "JSAppSugar", 1, null);
@@ -49,7 +61,7 @@ public class JSA4Java implements JSAppSugar {
 				Context.exit();
 			}
 			if(_jsClassLoader == null) {
-				_jsClassLoader = defaultLoader;
+				_jsClassLoader = loader;
 			}
 		}
 	}
