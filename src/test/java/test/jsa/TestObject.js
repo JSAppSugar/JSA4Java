@@ -1,4 +1,8 @@
 
+$import([
+	"test.jsa.NativeObject"
+	]);
+
 $class("test.jsa.TestObject",{
 	a:"-",
 	$init:function(a){
@@ -9,4 +13,8 @@ $class("test.jsa.TestObject",{
 	getA:function(){
 		return this.a;
 	},
+	nativeGetA:function(){
+		var nativeObj = new test.jsa.NativeObject();
+		return "-";
+	}
 });

@@ -1,9 +1,10 @@
 
 var JSA = JSA || {};
 var jsa = jsa || {};
+var $engine = $engine || {};
 JSA.$global = this;
 
-(function(){
+(function(engine){
 	"use strict";
 
 	jsa.Object = function(){};
@@ -82,7 +83,12 @@ JSA.$global = this;
 
 			var SuperClassProto = SuperClass.prototype;
 			if(define["$implementation"]){
-
+				JSAClass.$impl = define["$implementation"]['$'+engine.lang];
+				JSAClass.prototype.$init = engine.$init;
+				for(var key in define){
+					if(key.charAt(0)==='$') continue;
+					JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang]);
+				}
 			}else{
 				for(var key in define){
 					if(key.charAt(0)==='$' && key !== '$init')
@@ -117,7 +123,10 @@ JSA.$global = this;
 		}
 		return o;
 	};
-}());
+	JSA.$import = engine.$import;
+}($engine));
 
 $class = JSA.$class;
+$import = JSA.$import;
 $newClass = JSA.$newClass;
+delete $engine;

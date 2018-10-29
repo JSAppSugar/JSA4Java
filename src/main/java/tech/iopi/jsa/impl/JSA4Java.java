@@ -6,6 +6,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
 
 import tech.iopi.jsa.JSAObject;
 import tech.iopi.jsa.JSAppSugar;
@@ -53,8 +54,24 @@ public class JSA4Java implements JSAppSugar {
 		if(_scope == null) {
 			Context cx = Context.enter();
 			String jsaScript = loader.loadJSClass("JSAppSugar");
+			String jsa4JScript = loader.loadJSClass("JSA4Java");
+			if(jsaScript == null) {
+				throw new RuntimeException("JSAppSugar.js not found");
+			}
+			if(jsa4JScript == null) {
+				throw new RuntimeException("JSA4Java.js not found");
+			}
 			try {
 				_scope = cx.initStandardObjects();
+				
+				JSContext context = new JSContext(this);
+				Object wrappedContext = Context.javaToJS(context, _scope);
+				ScriptableObject.putProperty(_scope, "$context", wrappedContext);
+				
+				Object wrappedOut = Context.javaToJS(System.out, _scope);
+				ScriptableObject.putProperty(_scope, "$out", wrappedOut);
+				
+				cx.evaluateString(_scope, jsa4JScript, "JSA4Java", 1, null);
 				cx.evaluateString(_scope, jsaScript, "JSAppSugar", 1, null);
 				f_newClass = (Function)_scope.get("$newClass", _scope);
 			}finally {
@@ -62,22 +79,6 @@ public class JSA4Java implements JSAppSugar {
 			}
 			if(_jsClassLoader == null) {
 				_jsClassLoader = loader;
-			}
-		}
-	}
-	
-	private void loadJSClass(String className) {
-		if(!_loadedClasses.contains(className)) {
-			String jsaScript = _jsClassLoader.loadJSClass(className);
-			if(jsaScript == null) {
-				throw new RuntimeException("Can't find JS class "+className);
-			}
-			Context cx = Context.enter();
-			try {
-				cx.evaluateString(_scope, jsaScript, className, 1, null);
-				_loadedClasses.add(className);
-			}finally {
-				Context.exit();
 			}
 		}
 	}
@@ -102,6 +103,36 @@ public class JSA4Java implements JSAppSugar {
 	public Object invokeClassMethod(String className, String method, Object... arguments) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private void loadJSClass(String className) {
+		if(!_loadedClasses.contains(className)) {
+			String jsaScript = _jsClassLoader.loadJSClass(className);
+			if(jsaScript == null) {
+				throw new RuntimeException("Can't find JS class "+className);
+			}
+			Context cx = Context.enter();
+			try {
+				cx.evaluateString(_scope, jsaScript, className, 1, null);
+				_loadedClasses.add(className);
+			}finally {
+				Context.exit();
+			}
+		}
+	}
+	
+	public static class JSContext{
+		
+		private JSA4Java _jsa;
+		
+		public JSContext(JSA4Java jsa) {
+			this._jsa = jsa;
+		}
+		
+		//@SuppressWarnings("unused")
+		public void importJSClass(String className) {
+			_jsa.loadJSClass(className);
+		}
 	}
 
 }

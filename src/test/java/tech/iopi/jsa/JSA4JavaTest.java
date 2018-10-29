@@ -33,5 +33,12 @@ public class JSA4JavaTest{
 		String a = (String)testObject.invokeMethod("getA");
 		assertEquals("a", a);
 	}
+	
+	@Test
+	public void newJavaClassTest() {
+		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
+		String a = (String)testObject.invokeMethod("nativeGetA");
+		assertEquals("-", a);
+	}
 
 }
