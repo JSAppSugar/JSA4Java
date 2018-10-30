@@ -14,7 +14,7 @@ $class("test.jsa.TestObject",{
 		return this.a;
 	},
 	nativeGetA:function(){
-		var nativeObj = new test.jsa.NativeObject();
+		var nativeObj = new test.jsa.NativeObject("a");
 		return "-";
 	}
 });

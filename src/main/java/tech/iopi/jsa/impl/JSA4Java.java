@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
@@ -129,9 +130,18 @@ public class JSA4Java implements JSAppSugar {
 			this._jsa = jsa;
 		}
 		
-		//@SuppressWarnings("unused")
 		public void importJSClass(String className) {
 			_jsa.loadJSClass(className);
+		}
+		
+		public Object newClass(String className,NativeArray arguments) {
+			Class<?> cls;
+			try {
+				cls = Class.forName(className);
+				return ObjectAccessor.constructor(cls);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

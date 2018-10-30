@@ -9,7 +9,7 @@ var $engine = $engine || {};
 	$engine.lang = "java";
 
 	$engine.$init = function(){
-		
+		this.$this = $context.newClass(this.constructor.$impl,Array.prototype.slice.call(arguments));
 	};
 
 	$engine.$function = function(define){

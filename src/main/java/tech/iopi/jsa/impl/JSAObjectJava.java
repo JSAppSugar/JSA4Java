@@ -5,7 +5,7 @@ import tech.iopi.jsa.JSAObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
 
-public class JSAObjectJava implements JSAObject {
+class JSAObjectJava implements JSAObject {
 	
 	private NativeObject _jsObj;
 	
