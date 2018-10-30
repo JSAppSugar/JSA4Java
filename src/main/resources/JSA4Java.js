@@ -9,11 +9,15 @@ var $engine = $engine || {};
 	$engine.lang = "java";
 
 	$engine.$init = function(){
-		this.$this = $context.newClass(this.constructor.$impl,Array.prototype.slice.call(arguments));
+		return (function(){
+			this.$this = $context.newClass(this.constructor.$impl,Array.prototype.slice.call(arguments));
+		});
 	};
 
 	$engine.$function = function(define){
+		var method = define;
 		return (function(){
+			return $context.invokeMethod(this.$this,method,Array.prototype.slice.call(arguments));;
 		});
 	}
 

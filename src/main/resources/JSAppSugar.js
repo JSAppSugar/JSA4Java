@@ -84,7 +84,7 @@ JSA.$global = this;
 			var SuperClassProto = SuperClass.prototype;
 			if(define["$implementation"]){
 				JSAClass.$impl = define["$implementation"]['$'+engine.lang];
-				JSAClass.prototype.$init = engine.$init;
+				JSAClass.prototype.$init = engine.$init(define["$init"]?define["$init"]['$'+engine.lang]:undefined);
 				for(var key in define){
 					if(key.charAt(0)==='$') continue;
 					JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang]);

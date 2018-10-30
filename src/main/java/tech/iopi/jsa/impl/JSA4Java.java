@@ -143,6 +143,10 @@ public class JSA4Java implements JSAppSugar {
 				throw new RuntimeException(e);
 			}
 		}
+		
+		public Object invokeMethod(Object obj,String method,NativeArray arguments) {
+			return ObjectAccessor.method(obj, method, Context.emptyArgs);
+		}
 	}
 
 }

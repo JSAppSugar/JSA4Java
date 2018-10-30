@@ -4,6 +4,7 @@ import tech.iopi.jsa.JSAObject;
 
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.NativeJavaObject;
 
 class JSAObjectJava implements JSAObject {
 	
@@ -15,7 +16,10 @@ class JSAObjectJava implements JSAObject {
 
 	@Override
 	public Object invokeMethod(String method, Object... arguments) {
-		return ScriptableObject.callMethod(_jsObj, method, arguments);
+		Object value = ScriptableObject.callMethod(_jsObj, method, arguments);
+		if(value instanceof NativeJavaObject) {
+			value = ((NativeJavaObject)value).unwrap();
+		}
+		return value;
 	}
-
 }
