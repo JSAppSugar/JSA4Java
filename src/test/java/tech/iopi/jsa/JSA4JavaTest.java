@@ -28,17 +28,22 @@ public class JSA4JavaTest{
 	}
 	
 	@Test
-	public void newJSClassTest() {
-		JSAObject testObject = jsa.newClass("test.jsa.TestObject","a");
-		String a = (String)testObject.invokeMethod("getA");
-		assertEquals("a", a);
-	}
-	
-	@Test
 	public void jsSuperTest() {
 		JSAObject testObject = jsa.newClass("test.jsa.TestObjectB","a","b");
 		String b = (String)testObject.invokeMethod("getB");
 		assertEquals("ab", b);
+	}
+	
+	@Test
+	public void newJSClassTest() {
+		{
+			
+		}
+		{
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject","a");
+			String a = (String)testObject.invokeMethod("getA");
+			assertEquals("a", a);
+		}
 	}
 	
 	@Test

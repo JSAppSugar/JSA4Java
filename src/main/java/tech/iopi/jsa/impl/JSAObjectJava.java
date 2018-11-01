@@ -9,9 +9,11 @@ import org.mozilla.javascript.NativeJavaObject;
 class JSAObjectJava implements JSAObject {
 	
 	private NativeObject _jsObj;
+	private JSA4Java _jsa;
 	
-	public JSAObjectJava(NativeObject jsObj) {
+	public JSAObjectJava(NativeObject jsObj,JSA4Java jsa) {
 		_jsObj = jsObj;
+		_jsa = jsa;
 	}
 
 	public Object invokeMethod(String method, Object... arguments) {

@@ -21,7 +21,7 @@ import tech.iopi.jsa.JSClassLoader;
  */
 public class JSA4Java implements JSAppSugar {
 	
-	private Scriptable _scope;
+	protected Scriptable _scope;
 	private JSClassLoader _jsClassLoader;
 	private HashSet<String> _loadedClasses;
 	
@@ -89,14 +89,14 @@ public class JSA4Java implements JSAppSugar {
 		NativeObject jsObj = null;
 		Context cx = Context.enter();
 		try {
-			Object jsArgs = cx.newArray(_scope, arguments);
+			Object jsArgs = Convertor.java2js(arguments, _scope);
 			Object[] callArgs = {className , jsArgs};
 			jsObj = (NativeObject)f_newClass.call(cx, _scope, _scope, callArgs);
 		}finally {
 			Context.exit();
 		}
 		if(jsObj != null) {
-			return new JSAObjectJava(jsObj);
+			return new JSAObjectJava(jsObj,this);
 		}
 		return null;
 	}
