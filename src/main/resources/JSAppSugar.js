@@ -14,7 +14,7 @@ JSA.$global = this;
 	var f_$constructor = function(){
 		if(!initializing && this.$init){
 			var args = undefined;
-			if(arguments.length>0){
+			if(arguments.length>0 && arguments[0]){
 				args = arguments[0]["$arguments"];
 			}
 			this.$init.apply(this, args?args:arguments);
