@@ -1,8 +1,10 @@
 package tech.iopi.jsa;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.BeforeClass;
+import static org.junit.Assert.*;
+
+import java.util.HashMap;
 
 import tech.iopi.jsa.impl.JSA4Java;
 import tech.iopi.jsa.JSAppSugar;
@@ -37,12 +39,35 @@ public class JSA4JavaTest{
 	@Test
 	public void newJSClassTest() {
 		{
-			
+			Object[] args = {null};
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject",args);
+			Object a = testObject.invokeMethod("getA");
+			assertEquals("-", a);
 		}
 		{
 			JSAObject testObject = jsa.newClass("test.jsa.TestObject","a");
 			String a = (String)testObject.invokeMethod("getA");
 			assertEquals("a", a);
+		}
+		{
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject",1);
+			int a = (int)testObject.invokeMethod("getA");
+			assertEquals(1, a);
+		}
+		{
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject",true);
+			boolean a = (boolean)testObject.invokeMethod("getA");
+			assertEquals(true, a);
+		}
+		{
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("a",1);
+			m.put("b","b");
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject",m);
+			@SuppressWarnings("unchecked")
+			HashMap<String,Object> a = (HashMap<String,Object>)testObject.invokeMethod("getA");
+			assertEquals(1, a.get("a"));
+			assertEquals("b", a.get("b"));
 		}
 	}
 	
