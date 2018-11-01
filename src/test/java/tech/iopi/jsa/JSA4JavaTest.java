@@ -42,10 +42,12 @@ public class JSA4JavaTest{
 	}
 	
 	@Test
-	public void newJavaClassTest() {
-		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
-		String a = (String)testObject.invokeMethod("nativeGetA");
-		assertEquals("-", a);
+	public void typesTest() {
+		JSAObject test = jsa.newClass("test.jsa.TestObject");
+		{
+			String r = (String)test.invokeMethod("testInit","a",1);
+			assertEquals("a1", r);
+		}
 	}
 
 }
