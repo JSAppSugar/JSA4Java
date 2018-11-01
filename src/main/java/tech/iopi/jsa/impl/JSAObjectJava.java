@@ -4,7 +4,6 @@ import tech.iopi.jsa.JSAObject;
 
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.NativeJavaObject;
 
 class JSAObjectJava implements JSAObject {
 	
@@ -17,10 +16,12 @@ class JSAObjectJava implements JSAObject {
 	}
 
 	public Object invokeMethod(String method, Object... arguments) {
-		Object value = ScriptableObject.callMethod(_jsObj, method, arguments);
-		if(value instanceof NativeJavaObject) {
-			value = ((NativeJavaObject)value).unwrap();
+		if(arguments != null) {
+			for(int i=0;i<arguments.length;i++) {
+				arguments[i] = Convertor.java2js(arguments[i], _jsa._scope);
+			}
 		}
-		return value;
+		Object value = ScriptableObject.callMethod(_jsObj, method, arguments);
+		return Convertor.js2java(value);
 	}
 }

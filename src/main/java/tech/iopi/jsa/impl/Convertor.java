@@ -1,6 +1,7 @@
 package tech.iopi.jsa.impl;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.Scriptable;
 
 class Convertor {
@@ -16,6 +17,13 @@ class Convertor {
 			}
 		}else {
 			
+		}
+		return object;
+	}
+	
+	protected static Object js2java(Object object) {
+		if(object instanceof NativeJavaObject) {
+			object = ((NativeJavaObject)object).unwrap();
 		}
 		return object;
 	}
