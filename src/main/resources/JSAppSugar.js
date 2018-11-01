@@ -13,7 +13,11 @@ JSA.$global = this;
 
 	var f_$constructor = function(){
 		if(!initializing && this.$init){
-			this.$init.apply(this, arguments);
+			var args = undefined;
+			if(arguments.length>0){
+				args = arguments[0]["$arguments"];
+			}
+			this.$init.apply(this, args?args:arguments);
 		}
 	};
 
@@ -118,8 +122,7 @@ JSA.$global = this;
 		var cls = f_findClass(className);
 		var o = undefined;
 		if(cls){
-			o = new cls();
-			o.$init.apply(o,args);
+			o = new cls({"$arguments":args});
 		}
 		return o;
 	};
