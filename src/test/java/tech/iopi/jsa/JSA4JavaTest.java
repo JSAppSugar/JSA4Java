@@ -35,6 +35,13 @@ public class JSA4JavaTest{
 	}
 	
 	@Test
+	public void jsSuperTest() {
+		JSAObject testObject = jsa.newClass("test.jsa.TestObjectB","a","b");
+		String b = (String)testObject.invokeMethod("getB");
+		assertEquals("ab", b);
+	}
+	
+	@Test
 	public void newJavaClassTest() {
 		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
 		String a = (String)testObject.invokeMethod("nativeGetA");

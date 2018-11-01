@@ -114,6 +114,8 @@ public class JSA4Java implements JSAppSugar {
 			}
 			Context cx = Context.enter();
 			try {
+				jsaScript = jsaScript.replaceAll("\\$super[ ]*\\(", "this.\\$super\\(\"\\$init\"\\)\\(");
+				jsaScript = jsaScript.replaceAll("(\\$super)[ ]*\\.[ ]*([0-9a-zA-Z\\$_]+)[ ]*\\(", "this\\.$1(\"$2\")\\(");
 				cx.evaluateString(_scope, jsaScript, className, 1, null);
 				_loadedClasses.add(className);
 			}finally {

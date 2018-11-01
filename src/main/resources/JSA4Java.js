@@ -22,14 +22,16 @@ var $engine = $engine || {};
 
 	$engine.$init = function(){
 		return (function(){
-			this.$this = $context.newClass(this.constructor.$impl,Array.prototype.slice.call(arguments));
+			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
+			this.$this = $context.newClass(this.constructor.$impl,args);
 		});
 	};
 
 	$engine.$function = function(define){
 		var method = define;
 		return (function(){
-			var v = $context.invokeMethod(this.$this,method,Array.prototype.slice.call(arguments));
+			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
+			var v = $context.invokeMethod(this.$this,method,args);
 			if(v["getClass"]){
 				var javaClass = v.getClass().getName();
 				var toJS = typesMapJ2JS[javaClass];

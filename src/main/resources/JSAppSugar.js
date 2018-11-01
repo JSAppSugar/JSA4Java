@@ -97,7 +97,7 @@ JSA.$global = this;
 				for(var key in define){
 					if(key.charAt(0)==='$' && key !== '$init')
 						continue;
-					if(typeof define[key] == "function" && typeof SuperClassProto[key] == "function"){
+					if(typeof define[key] == "function"){
 						JSAClass.prototype[key] =(
 							function(defineFunction){
 								return function(){

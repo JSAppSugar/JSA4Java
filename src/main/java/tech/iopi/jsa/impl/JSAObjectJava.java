@@ -14,7 +14,6 @@ class JSAObjectJava implements JSAObject {
 		_jsObj = jsObj;
 	}
 
-	@Override
 	public Object invokeMethod(String method, Object... arguments) {
 		Object value = ScriptableObject.callMethod(_jsObj, method, arguments);
 		if(value instanceof NativeJavaObject) {
