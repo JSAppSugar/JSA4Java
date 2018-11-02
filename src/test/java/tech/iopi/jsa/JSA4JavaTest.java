@@ -99,8 +99,21 @@ public class JSA4JavaTest{
 			assertEquals("a1", r);
 		}
 		{
-			Object r = test.invokeMethod("testNull",new Object[]{null});
+			Object o = null;
+			Object r = test.invokeMethod("testNull",o);
 			assertEquals(null, r);
+		}
+		{
+			String r = (String)test.invokeMethod("testString","s");
+			assertEquals("s", r);
+		}
+		{
+			Number r = (Number)test.invokeMethod("testInt",1);
+			assertEquals(1, r.intValue());
+		}
+		{
+			boolean r = (boolean)test.invokeMethod("testBool",true);
+			assertEquals(true, r);
 		}
 	}
 

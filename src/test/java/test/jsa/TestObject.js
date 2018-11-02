@@ -26,5 +26,32 @@ $class("test.jsa.TestObject",{
 			}
 		}
 		return "null";
+	},
+	testString:function(s){
+		if((typeof s) == "string"){
+			var r = this.obj.testString("s");
+			if((typeof r) == "string"){
+				return "s";
+			}
+		}
+		return null;
+	},
+	testInt:function(i){
+		if((typeof i) == "number" && i === 1){
+			var r = this.obj.testInt(1);
+			if((typeof r) == "number" && r === 1){
+				return 1;
+			}
+		}
+		return null;
+	},
+	testBool:function(b){
+		if((typeof b) == "boolean" && b === true){
+			var r = this.obj.testBool(true);
+			if((typeof r) == "boolean" && r === true){
+				return true;
+			}
+		}
+		return false;
 	}
 });
