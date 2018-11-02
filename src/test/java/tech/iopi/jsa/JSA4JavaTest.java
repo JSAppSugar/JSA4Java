@@ -115,6 +115,17 @@ public class JSA4JavaTest{
 			boolean r = (boolean)test.invokeMethod("testBool",true);
 			assertEquals(true, r);
 		}
+		{
+			HashMap<String,Object> m = new HashMap<String,Object>();
+			m.put("a", 1);
+			m.put("b", "1");
+			@SuppressWarnings("unchecked")
+			HashMap<String,Object> r = (HashMap<String,Object>)test.invokeMethod("testMap",m);
+			Number a = (Number)r.get("a");
+			String b = (String)r.get("b");
+			assertEquals(1, a.intValue());
+			assertEquals("1", b);
+		}
 	}
 
 }

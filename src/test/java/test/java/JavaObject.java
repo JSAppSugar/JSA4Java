@@ -61,7 +61,11 @@ public class JavaObject {
 	
 	public Map<String,Object> testMap(Map<String,Object> m){
 		if(m.size() >0 ) {
-			return m;
+			Number a = (Number)m.get("a");
+			String b = (String)m.get("b");
+			if(a.intValue() == 1 &&b.equals("1")) {
+				return m;
+			}
 		}
 		return null;
 	}

@@ -53,5 +53,18 @@ $class("test.jsa.TestObject",{
 			}
 		}
 		return false;
+	},
+	testMap:function(m){
+		var a = m.a
+		var b = m.b
+		if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
+			var r = this.obj.testMap({a:1,b:"1"});
+			a = r.a;
+			b = r.b;
+			if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
+				return {a:1,b:"1"};
+			}
+		}
+		return null;
 	}
 });
