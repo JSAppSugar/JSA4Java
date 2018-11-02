@@ -98,6 +98,10 @@ public class JSA4JavaTest{
 			String r = (String)test.invokeMethod("testNativeInit","a",1);
 			assertEquals("a1", r);
 		}
+		{
+			Object r = test.invokeMethod("testNull",new Object[]{null});
+			assertEquals(null, r);
+		}
 	}
 
 }

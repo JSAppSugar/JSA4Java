@@ -32,7 +32,7 @@ var $engine = $engine || {};
 		return (function(){
 			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
 			var v = $context.invokeMethod(this.$this,method,args);
-			if(v["getClass"]){
+			if(v && v["getClass"]){
 				var javaClass = v.getClass().getName();
 				var toJS = typesMapJ2JS[javaClass];
 				if(toJS != undefined){

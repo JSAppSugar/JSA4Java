@@ -21,7 +21,6 @@ class ObjectAccessor {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T constructor(Class<T> c,Object... args){
-		args = filterArgs(args);
 		Constructor<?> con = null;
 		Class<?>[] argTypes = getArgTypes( args );
 		Class<?>[] constructorTypes;
@@ -48,7 +47,7 @@ class ObjectAccessor {
 			args = convertArgs(con.getParameterTypes(), args);
 		}
 		try {
-			return (T)processReturnValue(con.newInstance( args ));
+			return (T)con.newInstance( args );
 		} catch (InstantiationException e) {
 			throw new RuntimeException(e);
 		} catch (IllegalAccessException e) {
@@ -59,7 +58,6 @@ class ObjectAccessor {
 	}
 	
 	public static Object method(Object obj,String methodName,Object... args){
-		args = filterArgs(args);
 		Object methodObject = obj;
 		Class<?> objectClass = obj.getClass();
 		if(obj instanceof Class){
@@ -69,8 +67,9 @@ class ObjectAccessor {
 		Method m = getProperMethod(objectClass,methodName,methodObject==null,args);
 		if(m.isVarArgs()&&args!=null) args = transVarArgs(m.getParameterTypes(),args);
 		else if(args == null) args = new Object[]{null};
+		else args = convertArgs(m.getParameterTypes(), args);
 		try {
-			return processReturnValue(m.invoke(methodObject, args));
+			return m.invoke(methodObject, args);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		} catch (InvocationTargetException e) {
@@ -249,24 +248,6 @@ class ObjectAccessor {
 			if( args[i]!=null ) types[i] = args[i].getClass();
 		}
 		return types;
-	}
-
-	private static Object processReturnValue(Object value) {
-		return value;
-	}
-	
-	private static Object[] filterArgs( Object[] args ) {
-		if( args==null ) return null;
-		int len = args.length;
-		Object[] ret = new Object[ len ];
-		for( int i=0;i<len;i++ ) {
-			ret[i] = filterArg( args[i] );
-		}
-		return ret;
-	}
-	
-	private static Object filterArg( Object arg ) {
-		return arg;
 	}
 	
 	private static class MethodManager{
