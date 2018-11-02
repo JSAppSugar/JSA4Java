@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
@@ -54,6 +55,14 @@ class Convertor {
 				map.put(key.toString(), value);
 			}
 			object = map;
+		}else if(object instanceof NativeArray) {
+			NativeArray jsArray = (NativeArray)object;
+			int l = (int) jsArray.getLength();
+			Object[] array = new Object[l];
+			for(int i=0;i<l;i++) {
+				array[i] = Convertor.js2java(jsArray.get(i));
+			}
+			object = array;
 		}
 		return object;
 	}
