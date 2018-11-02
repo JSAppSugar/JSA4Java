@@ -137,10 +137,11 @@ public class JSA4Java implements JSAppSugar {
 		}
 		
 		public Object newClass(String className,NativeArray arguments) {
+			Object[] args = (Object[])Convertor.js2java(arguments, _jsa);
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				return ObjectAccessor.constructor(cls);
+				return ObjectAccessor.constructor(cls,args);
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}

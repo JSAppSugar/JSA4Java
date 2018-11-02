@@ -44,6 +44,8 @@ class ObjectAccessor {
 		
 		if(con.isVarArgs()&&args!=null){
 			args = transVarArgs(con.getParameterTypes(),args);
+		}else{
+			args = convertArgs(con.getParameterTypes(), args);
 		}
 		try {
 			return (T)processReturnValue(con.newInstance( args ));
@@ -75,6 +77,38 @@ class ObjectAccessor {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private static Object[] convertArgs(Class<?>[] varTypes,Object... args) {
+		for(int i=0;i<varTypes.length;i++) {
+			Class<?> needType = varTypes[i];
+			if(needType.isPrimitive()) {
+				needType = primitiveMap.get(needType);
+			}
+			if(Number.class.isAssignableFrom(needType)) {
+				Number value = (Number)args[i];
+				if(needType == Short.class) {
+					args[i] = value.shortValue();
+				}else if(needType == Integer.class) {
+					args[i] = value.intValue();
+				}else if(needType == Long.class) {
+					args[i] = value.longValue();
+				}else if(needType == Float.class) {
+					args[i] = value.floatValue();
+				}else if(needType == Double.class) {
+					args[i] = value.doubleValue();
+				}else if(needType == Byte.class) {
+					args[i] = value.byteValue();
+				}
+			}else if(needType == Boolean.class && args[i] instanceof Number) {
+				int value = ((Number)args[i]).intValue();
+				args[i] = value!=0;
+			}else if(needType == Character.class) {
+				args[i] = args[i].toString().charAt(0);
+			}
+		}
+		return args;
+	}
+	
 	private static Object[] transVarArgs(Class<?>[] varTypes,Object... args){
 		Object[] newArgs = new Object[varTypes.length];
 		Object[] varArgs = null;
@@ -169,7 +203,10 @@ class ObjectAccessor {
 				return MATCH;
 			} else if( paramType.isAssignableFrom( argType ) ) {
 				return MAY_MATCH;
-			} else {
+			} else if(Number.class.isAssignableFrom(paramType) && Number.class.isAssignableFrom(argType)) {
+				return MAY_MATCH;
+			}
+			else {
 				return NOT_MATCH;
 			}
 		} else {
@@ -193,7 +230,11 @@ class ObjectAccessor {
 		if( prim.equals( wrapper ) ) {
 			return MATCH;
 		}
-		if( primitiveMap.get( prim ).equals( wrapper ) ) {
+		Class<?> primitiveClass = primitiveMap.get( prim );
+		if( primitiveClass.equals( wrapper ) ) {
+			return MAY_MATCH;
+		}
+		if(Number.class.isAssignableFrom(primitiveClass) && Number.class.isAssignableFrom(wrapper)) {
 			return MAY_MATCH;
 		}
 		return NOT_MATCH;

@@ -13,8 +13,8 @@ $class("test.jsa.TestObject",{
 	getA:function(){
 		return this.a;
 	},
-	testInit:function(s,i){
-		var obj = new test.jsa.NativeObject(s,i);
+	testNativeInit:function(s,i){
+		var obj = new test.jsa.NativeObject(s,i+0);
 		return obj.getS()+obj.getI();
 	}
 });

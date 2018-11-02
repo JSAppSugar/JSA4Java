@@ -95,7 +95,7 @@ public class JSA4JavaTest{
 	public void typesTest() {
 		JSAObject test = jsa.newClass("test.jsa.TestObject");
 		{
-			String r = (String)test.invokeMethod("testInit","a",1);
+			String r = (String)test.invokeMethod("testNativeInit","a",1);
 			assertEquals("a1", r);
 		}
 	}
