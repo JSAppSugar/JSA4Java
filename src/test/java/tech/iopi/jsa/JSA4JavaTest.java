@@ -126,6 +126,14 @@ public class JSA4JavaTest{
 			assertEquals(1, a.intValue());
 			assertEquals("1", b);
 		}
+		{
+			Object[] m = new Object[] {1,"1"};
+			Object[] r = (Object[])test.invokeMethod("testArray",new Object[] {m});
+			Number a = (Number)r[0];
+			String b = (String)r[1];
+			assertEquals(1, a.intValue());
+			assertEquals("1", b);
+		}
 	}
 
 }

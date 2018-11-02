@@ -72,7 +72,11 @@ public class JavaObject {
 	
 	public Object[] testArray(Object[] array) {
 		if(array.length>0) {
-			return array;
+			Number a = (Number)array[0];
+			String b = (String)array[1];
+			if(a.intValue() == 1 &&b.equals("1")) {
+				return array;
+			}
 		}
 		return null;
 	}

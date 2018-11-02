@@ -66,5 +66,18 @@ $class("test.jsa.TestObject",{
 			}
 		}
 		return null;
+	},
+	testArray:function(m){
+		var a = m[0];
+		var b = m[1]
+		if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
+			var r = this.obj.testArray([1,"1"]);
+			a = r[0];
+			b = r[1];
+			if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
+				return [1,"1"];
+			}
+		}
+		return null;
 	}
 });
