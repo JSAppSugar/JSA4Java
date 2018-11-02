@@ -77,6 +77,18 @@ public class JSA4JavaTest{
 			assertEquals(1, a[0]);
 			assertEquals("a", a[1]);
 		}
+		{
+			Object obj = new Object();
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject",obj);
+			Object a = testObject.invokeMethod("getA");
+			assertEquals(obj, a);
+		}
+		{
+			Object obj = jsa.newClass("test.jsa.TestObject","a");
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject",obj);
+			JSAObject a = (JSAObject)testObject.invokeMethod("getA");
+			assertEquals("a", a.invokeMethod("getA"));
+		}
 	}
 	
 	@Test

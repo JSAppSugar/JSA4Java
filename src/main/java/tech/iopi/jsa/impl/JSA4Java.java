@@ -89,7 +89,7 @@ public class JSA4Java implements JSAppSugar {
 		NativeObject jsObj = null;
 		Context cx = Context.enter();
 		try {
-			Object jsArgs = Convertor.java2js(arguments, _scope);
+			Object jsArgs = Convertor.java2js(arguments, this);
 			Object[] callArgs = {className , jsArgs};
 			jsObj = (NativeObject)f_newClass.call(cx, _scope, _scope, callArgs);
 		}finally {
