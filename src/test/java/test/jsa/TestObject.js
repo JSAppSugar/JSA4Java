@@ -14,6 +14,16 @@ $class("test.jsa.TestObject",{
 	getA:function(){
 		return this.a;
 	},
+	getTestFunc:function(){
+		var f = function(v){
+			if(this && this["getA"]){
+				return this.getA();
+			}else{
+				return v;
+			}
+		}
+		return f;
+	},
 	testNativeInit:function(s,i){
 		var obj = new test.jsa.NativeObject(s,i+0);
 		return obj.getS()+obj.getI();
@@ -69,7 +79,7 @@ $class("test.jsa.TestObject",{
 	},
 	testArray:function(m){
 		var a = m[0];
-		var b = m[1]
+		var b = m[1];
 		if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
 			var r = this.obj.testArray([1,"1"]);
 			a = r[0];

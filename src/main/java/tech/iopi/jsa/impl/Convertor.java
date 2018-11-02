@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeFunction;
 import org.mozilla.javascript.NativeJavaObject;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
@@ -42,6 +43,9 @@ class Convertor {
 		}else if(object instanceof JSAObjectJava) {
 			JSAObjectJava jsaObj = (JSAObjectJava)object;
 			object = jsaObj._jsObj;
+		}else if(object instanceof JSAFunctionJava) {
+			JSAFunctionJava jsaFunc = (JSAFunctionJava)object;
+			object = jsaFunc._jsFunc;
 		}
 		return object;
 	}
@@ -80,6 +84,9 @@ class Convertor {
 				array[i] = Convertor.js2java(jsArray.get(i),jsa);
 			}
 			object = array;
+		}else if(object instanceof NativeFunction) {
+			NativeFunction jsFunc = (NativeFunction)object;
+			object = new JSAFunctionJava(jsFunc, jsa);
 		}
 		return object;
 	}
