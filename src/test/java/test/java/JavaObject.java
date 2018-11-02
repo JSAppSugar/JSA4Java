@@ -105,5 +105,11 @@ public class JavaObject {
 		return null;
 	}
 	
-	
+	public JSAFunction testJSAFunction(JSAFunction jsaFunc) {
+		String r = (String)jsaFunc.call("f");
+		if(r.equals("f")) {
+			return jsaFunc;
+		}
+		return null;
+	}
 }

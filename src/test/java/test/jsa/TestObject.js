@@ -102,5 +102,14 @@ $class("test.jsa.TestObject",{
 			}
 		}
 		return null;
+	},
+	testJSAFunction:function(f){
+		if((typeof f) == "function"){
+			var r = this.obj.testJSAFunction(f);
+			if(r === f){
+				return f;
+			}
+		}
+		return null;
 	}
 });

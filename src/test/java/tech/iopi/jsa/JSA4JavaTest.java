@@ -152,5 +152,11 @@ public class JSA4JavaTest{
 			String a = (String)f.apply(o, "f");
 			assertEquals("a", a);
 		}
+		{
+			JSAFunction f = (JSAFunction)test.invokeMethod("getTestFunc");
+			JSAFunction r = (JSAFunction)test.invokeMethod("testJSAFunction",f);
+			String t = (String)r.call("f");
+			assertEquals("f", t);
+		}
 	}
 }

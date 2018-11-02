@@ -47,5 +47,9 @@ $class("test.jsa.NativeObject",{
 	testJSAObject:{
 		$java : "testJSAObject",
 		$oc : "testJSAObject:"
+	},
+	testJSAFunction:{
+		$java : "testJSAFunction",
+		$oc : "testJSAFunction:"
 	}
 });
