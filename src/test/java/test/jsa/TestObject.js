@@ -79,5 +79,18 @@ $class("test.jsa.TestObject",{
 			}
 		}
 		return null;
+	},
+	testObject:function(o){
+		var r = this.obj.testObject(o);
+		return r;
+	},
+	testJSAObject:function(o){
+		if(o.constructor.$name == "test.jsa.TestObject" && o.getA() == "a"){
+			var r = this.obj.testJSAObject(o);
+			if(r === o){
+				return o;
+			}
+		}
+		return null;
 	}
 });

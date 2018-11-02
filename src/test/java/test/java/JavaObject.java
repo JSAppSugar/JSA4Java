@@ -82,7 +82,10 @@ public class JavaObject {
 	}
 	
 	public Object testObject(Object o) {
-		return o;
+		if(o.getClass() == Object.class) {
+			return o;
+		}
+		return null;
 	}
 	
 	public JSAFunction testFunction(JSAFunction func) {
@@ -94,7 +97,10 @@ public class JavaObject {
 	
 	public JSAObject testJSAObject(JSAObject jsaObject) {
 		if(jsaObject instanceof JSAObject) {
-			return jsaObject;
+			String a = (String)jsaObject.invokeMethod("getA");
+			if(a.equals("a")) {
+				return jsaObject;
+			}
 		}
 		return null;
 	}
