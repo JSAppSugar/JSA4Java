@@ -100,6 +100,12 @@ JSA.$global = this;
 				JSAClass.fromNative = function(obj){
 					return new JSAClass({"$native":args});
 				}
+				if(define.$static){
+					var staticDefine = define.$static;
+					for(var key in staticDefine){
+						JSAClass[key] = engine.$staticFunction(staticDefine[key]["$"+engine.lang]);
+					}
+				}
 			}else{
 				for(var key in define){
 					if(key.charAt(0)==='$' && key !== '$init')

@@ -17,6 +17,18 @@ var $engine = $engine || {};
 		"java.lang.Byte" : "intValue",
 		"java.lang.String" : "",
 	};
+	
+	var f_java2js = function(v){
+		if(v && v["getClass"]){
+			var javaClass = v.getClass().getName();
+			var toJS = typesMapJ2JS[javaClass];
+			if(toJS != undefined){
+				if(toJS == "") v = v+"";
+				else v = v[toJS]();
+			}
+		}
+		return v;
+	}
 
 	$engine.lang = "java";
 
@@ -32,15 +44,17 @@ var $engine = $engine || {};
 		return (function(){
 			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
 			var v = $context.invokeMethod(this.$this,method,args);
-			if(v && v["getClass"]){
-				var javaClass = v.getClass().getName();
-				var toJS = typesMapJ2JS[javaClass];
-				if(toJS != undefined){
-					if(toJS == "") v = v+"";
-					else v = v[toJS]();
-				}
-			}
-			return v;
+			return f_java2js(v);
+		});
+	}
+	
+	$engine.$staticFunction = function(define){
+		var method = define;
+		return(function(){
+			var className = this.$impl;
+			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
+			var v = $context.invokeClassMethod(className,method,args);
+			return f_java2js(v);
 		});
 	}
 

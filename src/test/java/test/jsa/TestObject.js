@@ -34,6 +34,9 @@ $class("test.jsa.TestObject",{
 		var obj = new test.jsa.NativeObject(s,i+0);
 		return obj.getS()+obj.getI();
 	},
+	testNativeStatic:function(){
+		return test.jsa.NativeObject.staticA();
+	},
 	testNull:function(v){
 		if(v == undefined){
 			var r = this.obj.testNull(null);

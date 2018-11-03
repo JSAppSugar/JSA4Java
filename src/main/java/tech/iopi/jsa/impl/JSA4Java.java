@@ -164,6 +164,21 @@ public class JSA4Java implements JSAppSugar {
 			Object value = ObjectAccessor.method(obj, method, args);
 			return Convertor.java2js(value, _jsa);
 		}
+		
+		public Object invokeClassMethod(String className,String method,NativeArray arguments) {
+			Object[] args = (Object[])Convertor.js2java(arguments, _jsa);
+			Class<?> cls = null;
+			try {
+				cls = Class.forName(className);
+			} catch (ClassNotFoundException e) {
+				
+			}
+			if(cls!=null) {
+				Object value = ObjectAccessor.method(cls, method, args);
+				return Convertor.java2js(value, _jsa);
+			}
+			return null;
+		}
 	}
 
 }

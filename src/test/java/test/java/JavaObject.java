@@ -9,6 +9,10 @@ public class JavaObject {
 	private String _s = "-";
 	private int _i = 0;
 	
+	public static String staticA() {
+		return "a";
+	}
+	
 	public JavaObject() {
 		
 	}

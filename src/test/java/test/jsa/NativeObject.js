@@ -4,6 +4,12 @@ $class("test.jsa.NativeObject",{
 		$java : "test.java.JavaObject",
 		$oc : "TestOCObject",
 	},
+	$static:{
+		staticA:{
+			$java : "staticA",
+			$oc : "staticA"
+		}
+	},
 	getS:{
 		$java : "getS",
 		$oc : "getS"
