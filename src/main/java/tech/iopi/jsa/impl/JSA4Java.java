@@ -29,7 +29,7 @@ public class JSA4Java implements JSAppSugar {
 	private Function f_classFunction;
 	
 	public JSA4Java() {
-		_loadedClasses = new HashSet<>();
+		_loadedClasses = new HashSet<String>();
 	}
 	
 	/**

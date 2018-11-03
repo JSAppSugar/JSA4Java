@@ -24,7 +24,7 @@ public class JavaObject {
 	
 	public JavaObject(Map<String,Object> m) {
 		_s = (String)m.get("s");
-		_i = (int)m.get("i");
+		_i = (Integer)m.get("i");
 	}
 
 	public String getS() {

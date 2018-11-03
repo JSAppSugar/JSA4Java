@@ -51,12 +51,12 @@ public class JSA4JavaTest{
 		}
 		{
 			JSAObject testObject = jsa.newClass("test.jsa.TestObject",1);
-			int a = (int)testObject.invokeMethod("getA");
+			int a = (Integer)testObject.invokeMethod("getA");
 			assertEquals(1, a);
 		}
 		{
 			JSAObject testObject = jsa.newClass("test.jsa.TestObject",true);
-			boolean a = (boolean)testObject.invokeMethod("getA");
+			boolean a = (Boolean)testObject.invokeMethod("getA");
 			assertEquals(true, a);
 		}
 		{
@@ -112,7 +112,7 @@ public class JSA4JavaTest{
 			assertEquals(1, r.intValue());
 		}
 		{
-			boolean r = (boolean)test.invokeMethod("testBool",true);
+			boolean r = (Boolean)test.invokeMethod("testBool",true);
 			assertEquals(true, r);
 		}
 		{
