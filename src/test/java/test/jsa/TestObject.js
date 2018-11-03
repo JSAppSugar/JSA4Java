@@ -11,6 +11,12 @@ $class("test.jsa.TestObject",{
 		}
 		this.obj = new test.jsa.NativeObject();
 	},
+	$static:{
+		staticA:"a",
+		staticGetA(a){
+			return this.staticA+a;
+		}
+	},
 	getA:function(){
 		return this.a;
 	},

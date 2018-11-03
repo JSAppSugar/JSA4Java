@@ -7,7 +7,7 @@ import org.mozilla.javascript.Scriptable;
 import tech.iopi.jsa.JSAFunction;
 import tech.iopi.jsa.JSAObject;
 
-public class JSAFunctionJava implements JSAFunction {
+class JSAFunctionJava implements JSAFunction {
 	
 	protected NativeFunction _jsFunc;
 	private JSA4Java _jsa;

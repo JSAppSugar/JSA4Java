@@ -159,4 +159,11 @@ public class JSA4JavaTest{
 			assertEquals("f", t);
 		}
 	}
+	
+	@Test
+	public void staticTest() {
+		
+		String a = (String)jsa.invokeClassMethod("test.jsa.TestObject", "staticGetA", "a");
+		assertEquals("aa", a);
+	}
 }

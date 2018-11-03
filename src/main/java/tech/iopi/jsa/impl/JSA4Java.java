@@ -26,6 +26,7 @@ public class JSA4Java implements JSAppSugar {
 	private HashSet<String> _loadedClasses;
 	
 	private Function f_newClass;
+	private Function f_classFunction;
 	
 	public JSA4Java() {
 		_loadedClasses = new HashSet<>();
@@ -75,6 +76,7 @@ public class JSA4Java implements JSAppSugar {
 				cx.evaluateString(_scope, jsa4JScript, "JSA4Java", 1, null);
 				cx.evaluateString(_scope, jsaScript, "JSAppSugar", 1, null);
 				f_newClass = (Function)_scope.get("$newClass", _scope);
+				f_classFunction = (Function)_scope.get("$classFunction", _scope);
 			}finally {
 				Context.exit();
 			}
@@ -102,8 +104,18 @@ public class JSA4Java implements JSAppSugar {
 	}
 
 	public Object invokeClassMethod(String className, String method, Object... arguments) {
-		// TODO Auto-generated method stub
-		return null;
+		this.loadJSClass(className);
+		Object value = null;
+		Context cx = Context.enter();
+		try {
+			Object jsArgs = Convertor.java2js(arguments, this);
+			Object[] callArgs = {className,method,jsArgs};
+			value = f_classFunction.call(cx, _scope, _scope, callArgs);
+			value = Convertor.js2java(value,this);
+		}finally {
+			Context.exit();
+		}
+		return value;
 	}
 	
 	private void loadJSClass(String className) {

@@ -120,6 +120,12 @@ JSA.$global = this;
 						JSAClass.prototype[key] = define[key];
 					}
 				}
+				if(define.$static && typeof define.$static === "object"){
+					var defineStatic = define.$static;
+					for(var key in defineStatic){
+						JSAClass[key] = defineStatic[key];
+					}
+				}
 			}
 
 			f_applyClass(className,JSAClass);
@@ -134,9 +140,17 @@ JSA.$global = this;
 		return o;
 	};
 	JSA.$import = engine.$import;
+	JSA.$classFunction = function(className,methodName,args){
+		var cls = f_findClass(className);
+		if(cls && cls[methodName]){
+			return cls[methodName].apply(cls,args);
+		}
+		return null;
+	}
 }($engine));
 
 $class = JSA.$class;
 $import = JSA.$import;
 $newClass = JSA.$newClass;
+$classFunction = JSA.$classFunction;
 delete $engine;
