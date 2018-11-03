@@ -54,7 +54,7 @@ public class JSA4Java implements JSAppSugar {
 	 */
 	public void startEngine(JSClassLoader loader) {
 		if(_scope == null) {
-			Context cx = Context.enter();
+			Context cx = JSA4Java.enterContext();
 			String jsaScript = loader.loadJSClass("JSAppSugar");
 			String jsa4JScript = loader.loadJSClass("JSA4Java");
 			if(jsaScript == null) {
@@ -72,7 +72,6 @@ public class JSA4Java implements JSAppSugar {
 				
 				Object wrappedOut = Context.javaToJS(System.out, _scope);
 				ScriptableObject.putProperty(_scope, "$out", wrappedOut);
-				
 				cx.evaluateString(_scope, jsa4JScript, "JSA4Java", 1, null);
 				cx.evaluateString(_scope, jsaScript, "JSAppSugar", 1, null);
 				f_newClass = (Function)_scope.get("$newClass", _scope);
@@ -89,7 +88,7 @@ public class JSA4Java implements JSAppSugar {
 	public JSAObject newClass(String className, Object... arguments) {
 		this.loadJSClass(className);
 		NativeObject jsObj = null;
-		Context cx = Context.enter();
+		Context cx = JSA4Java.enterContext();
 		try {
 			Object jsArgs = Convertor.java2js(arguments, this);
 			Object[] callArgs = {className , jsArgs};
@@ -106,7 +105,7 @@ public class JSA4Java implements JSAppSugar {
 	public Object invokeClassMethod(String className, String method, Object... arguments) {
 		this.loadJSClass(className);
 		Object value = null;
-		Context cx = Context.enter();
+		Context cx = JSA4Java.enterContext();
 		try {
 			Object jsArgs = Convertor.java2js(arguments, this);
 			Object[] callArgs = {className,method,jsArgs};
@@ -118,13 +117,19 @@ public class JSA4Java implements JSAppSugar {
 		return value;
 	}
 	
+	protected static Context enterContext() {
+		Context cx = Context.enter();
+		cx.setOptimizationLevel(-1);
+		return cx;
+	}
+	
 	private void loadJSClass(String className) {
 		if(!_loadedClasses.contains(className)) {
 			String jsaScript = _jsClassLoader.loadJSClass(className);
 			if(jsaScript == null) {
 				throw new RuntimeException("Can't find JS class "+className);
 			}
-			Context cx = Context.enter();
+			Context cx = JSA4Java.enterContext();
 			try {
 				jsaScript = jsaScript.replaceAll("\\$super[ ]*\\(", "this.\\$super\\(\"\\$init\"\\)\\(");
 				jsaScript = jsaScript.replaceAll("(\\$super)[ ]*\\.[ ]*([0-9a-zA-Z\\$_]+)[ ]*\\(", "this\\.$1(\"$2\")\\(");

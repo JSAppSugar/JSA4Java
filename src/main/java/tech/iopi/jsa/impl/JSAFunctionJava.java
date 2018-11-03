@@ -31,7 +31,7 @@ class JSAFunctionJava implements JSAFunction {
 		if(thisObject instanceof JSAObjectJava) {
 			jsThis = ((JSAObjectJava)thisObject)._jsObj;
 		}
-		Context cx = Context.enter();
+		Context cx = JSA4Java.enterContext();
 		try {
 			Object value = _jsFunc.call(cx, _jsa._scope, jsThis, arguments);
 			return Convertor.js2java(value,_jsa);

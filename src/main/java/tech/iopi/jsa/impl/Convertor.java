@@ -19,7 +19,7 @@ class Convertor {
 			for(int i=0;i<array.length;i++) {
 				array[i] = Convertor.java2js(array[i],jsa);
 			}
-			Context cx = Context.enter();
+			Context cx = JSA4Java.enterContext();
 			try {
 				object = cx.newArray(jsa._scope, array);
 			}finally {
@@ -28,7 +28,7 @@ class Convertor {
 		}else if(object instanceof Map) {
 			@SuppressWarnings("unchecked")
 			Map<Object,Object> map = (Map<Object,Object>)object;
-			Context cx = Context.enter();
+			Context cx = JSA4Java.enterContext();
 			try {
 				Scriptable jsObj = cx.newObject(jsa._scope);
 				for(Object key : map.keySet()) {
