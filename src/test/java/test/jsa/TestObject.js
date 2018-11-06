@@ -65,7 +65,7 @@ $class("test.jsa.TestObject",{
 		return null;
 	},
 	testBool:function(b){
-		if((typeof b) == "boolean" && b === true){
+		if(b == true){
 			var r = this.obj.testBool(true);
 			if((typeof r) == "boolean" && r === true){
 				return true;

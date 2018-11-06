@@ -4,6 +4,12 @@ $class("test.jsa.NativeObject",{
 		$java : "test.java.JavaObject",
 		$oc : "TestOCObject",
 	},
+	$init:{
+		$oc:[
+			"initWithString:Int:",
+			"initWithNSDictionary:"
+		]
+	},
 	$static:{
 		staticA:{
 			$java : "staticA",

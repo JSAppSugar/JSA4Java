@@ -92,13 +92,6 @@ public class JavaObject {
 		return null;
 	}
 	
-	public JSAFunction testFunction(JSAFunction func) {
-		if(func instanceof JSAFunction) {
-			return func;
-		}
-		return null;
-	}
-	
 	public JSAObject testJSAObject(JSAObject jsaObject) {
 		if(jsaObject instanceof JSAObject) {
 			String a = (String)jsaObject.invokeMethod("getA");
