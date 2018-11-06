@@ -1,7 +1,7 @@
 
-$import([
+$import(
 	"test.jsa.TestObject"
-	]);
+	);
 
 $class("test.jsa.TestObjectB",{
 	$extends:"test.jsa.TestObject",

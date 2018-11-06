@@ -1,7 +1,7 @@
 
-$import([
+$import(
 	"test.jsa.NativeObject"
-	]);
+	);
 
 $class("test.jsa.TestObject",{
 	a:"-",

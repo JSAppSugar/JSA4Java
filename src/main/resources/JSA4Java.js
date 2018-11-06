@@ -58,9 +58,9 @@ var $engine = $engine || {};
 		});
 	}
 
-	$engine.$import = function(classes){
-		for(var i in classes){
-			$context.importJSClass(classes[i]);
+	$engine.$import = function(){
+		for(var i in arguments){
+			$context.importJSClass(arguments[i]);
 		}
 	}
 
