@@ -1,7 +1,35 @@
+// MIT License
+
+// Copyright (c) 2018 JSAppSugar
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 var JSA = JSA || {};
 var jsa = jsa || {};
-var $engine = $engine || {};
+var $engine = $engine || {
+	f_redefine : function(func){
+		var s = func.toString();
+		s = s.replace(/\$super[ ]*\(/g,"this.\$super\(\"\$init\"\)\(");
+		s = s.replace(/(\$super)[ ]*\.[ ]*([0-9a-zA-Z\$_]+)[ ]*\(/g,"this\.$1(\"$2\")\(");
+		return eval("(function(){return("+s+");})();");
+	}
+};
 JSA.$global = this;
 
 (function(engine){
@@ -110,9 +138,10 @@ JSA.$global = this;
 				for(var key in define){
 					if(key.charAt(0)==='$' && key !== '$init')
 						continue;
-					if(typeof define[key] == "function"){
+					if(typeof define[key] == "function" && /\$super/.test(define[key])){
 						JSAClass.prototype[key] =(
 							function(defineFunction){
+								if(engine.f_redefine) defineFunction = engine.f_redefine(defineFunction);
 								return function(){
 									var t = this.$SuperClass;
 									this.$SuperClass = SuperClassProto;
