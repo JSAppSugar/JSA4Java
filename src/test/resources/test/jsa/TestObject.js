@@ -20,6 +20,9 @@ $class("test.jsa.TestObject",{
 	getA:function(){
 		return this.a;
 	},
+	getNativeObj:function(){
+		return this.obj;
+	},
 	getTestFunc:function(){
 		var f = function(v){
 			if(this && this["getA"]){

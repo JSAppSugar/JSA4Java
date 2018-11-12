@@ -66,7 +66,12 @@ class Convertor {
 			}
 			
 			if(isClass) {
-				object = new JSAObjectJava(jsObj, jsa);
+				if(jsObj.has("$this", jsObj)) {
+					NativeJavaObject wrapThis = (NativeJavaObject)jsObj.get("$this", jsObj);
+					object = wrapThis.unwrap();
+				}else {
+					object = new JSAObjectJava(jsObj, jsa);
+				}
 			}else {
 				HashMap<String,Object> map = new HashMap<String,Object>();
 				for(Object key : jsObj.keySet()) {
