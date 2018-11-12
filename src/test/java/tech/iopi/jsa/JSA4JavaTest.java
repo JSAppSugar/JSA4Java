@@ -127,8 +127,10 @@ public class JSA4JavaTest{
 			HashMap<String,Object> r = (HashMap<String,Object>)test.invokeMethod("testMap",m);
 			Number a = (Number)r.get("a");
 			String b = (String)r.get("b");
+			Object o = r.get("o");
 			assertEquals(1, a.intValue());
 			assertEquals("1", b);
+			assertEquals("test.java.JavaObject",o.getClass().getName());
 		}
 		{
 			Object[] m = new Object[] {1,"1"};

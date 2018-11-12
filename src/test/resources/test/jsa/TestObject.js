@@ -80,11 +80,12 @@ $class("test.jsa.TestObject",{
 		var a = m.a
 		var b = m.b
 		if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
-			var r = this.obj.testMap({a:1,b:"1"});
+			var r = this.obj.testMap({a:1,b:"1",o:this.obj});
 			a = r.a;
 			b = r.b;
+			var o = r.o;
 			if((typeof a)=="number" && (typeof b) == "string" && a === 1 && b === "1"){
-				return {a:1,b:"1"};
+				return {a:1,b:"1",o:o};
 			}
 		}
 		return null;

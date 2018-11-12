@@ -67,7 +67,8 @@ public class JavaObject {
 		if(m.size() >0 ) {
 			Number a = (Number)m.get("a");
 			String b = (String)m.get("b");
-			if(a.intValue() == 1 &&b.equals("1")) {
+			Object o = m.get("o");
+			if(a.intValue() == 1 &&b.equals("1")&&o.getClass().getName().equals("test.java.JavaObject")) {
 				return m;
 			}
 		}
