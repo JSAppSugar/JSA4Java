@@ -67,8 +67,12 @@ class Convertor {
 			
 			if(isClass) {
 				if(jsObj.has("$this", jsObj)) {
-					NativeJavaObject wrapThis = (NativeJavaObject)jsObj.get("$this", jsObj);
-					object = wrapThis.unwrap();
+					Object wrapThis = jsObj.get("$this", jsObj);
+					if(wrapThis instanceof NativeJavaObject) {
+						object = ((NativeJavaObject)wrapThis).unwrap();
+					}else {
+						object = wrapThis;
+					}
 				}else {
 					object = new JSAObjectJava(jsObj, jsa);
 				}

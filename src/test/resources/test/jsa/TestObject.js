@@ -124,5 +124,13 @@ $class("test.jsa.TestObject",{
 			}
 		}
 		return null;
+	},
+	testWeakNativeA:function(obj){
+		var nativeObj = test.jsa.NativeObject.fromNative(obj);
+		this.weakObj = nativeObj.weakObject();
+	},
+	testWeakNativeB:function(){
+		var nativeObj = this.weakObj.self();
+		return nativeObj;
 	}
 });

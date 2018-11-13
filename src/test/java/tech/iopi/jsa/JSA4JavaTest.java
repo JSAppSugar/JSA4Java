@@ -9,6 +9,7 @@ import java.util.HashMap;
 import tech.iopi.jsa.impl.JSA4Java;
 import tech.iopi.jsa.JSAppSugar;
 import tech.iopi.jsa.JSAObject;
+import test.java.JavaObject;
 
 /**
  * Unit test for simple App.
@@ -176,6 +177,17 @@ public class JSA4JavaTest{
 			JSAObject test = jsa.newClass("test.jsa.TestObject");
 			String r = (String)test.invokeMethod("testNativeStatic");
 			assertEquals("a", r);
+		}
+	}
+	
+	@Test
+	public void weakTest() {
+		{
+			JavaObject testJavaObj = new JavaObject();
+	        JSAObject testObject = jsa.newClass("test.jsa.TestObject");
+	        testObject.invokeMethod("testWeakNativeA", testJavaObj);
+	        testJavaObj = (JavaObject)testObject.invokeMethod("testWeakNativeB");
+	        assertNotNull(testJavaObj);
 		}
 	}
 }

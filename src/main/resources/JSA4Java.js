@@ -63,6 +63,18 @@ var $engine = $engine || {};
 			$context.importJSClass(arguments[i]);
 		}
 	}
+	
+	$engine.weakObject = function(){
+		var weakObject = new jsa.Object();
+		weakObject.$weakThis = this;
+		return weakObject;
+	}
+	$engine.isWeak = function(){
+		return this.$weakThis?true:false;
+	}
+	$engine.self = function(){
+		return this.$weakThis?this.$weakThis:this;
+	}
 
 }());
 

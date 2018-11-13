@@ -37,6 +37,10 @@ JSA.$global = this;
 
 	jsa.Object = function(){};
 
+	jsa.Object.prototype.weakObject = engine.weakObject;
+	jsa.Object.prototype.isWeak = engine.isWeak;
+	jsa.Object.prototype.self = engine.self;
+
 	var initializing = false;
 
 	var f_$constructor = function(){
@@ -126,7 +130,7 @@ JSA.$global = this;
 					JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang]);
 				}
 				JSAClass.fromNative = function(obj){
-					return new JSAClass({"$native":args});
+					return new JSAClass({"$native":obj});
 				}
 				if(define.$static){
 					var staticDefine = define.$static;
