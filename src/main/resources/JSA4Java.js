@@ -3,7 +3,7 @@ var $engine = $engine || {};
 
 
 
-(function(){
+(function(global){
 	"use strict";
 	
 	var typesMapJ2JS = {
@@ -28,7 +28,7 @@ var $engine = $engine || {};
 			}
 		}
 		return v;
-	}
+	};
 
 	$engine.lang = "java";
 
@@ -46,7 +46,7 @@ var $engine = $engine || {};
 			var v = $context.invokeMethod(this.$this,method,args);
 			return f_java2js(v);
 		});
-	}
+	};
 	
 	$engine.$staticFunction = function(define){
 		var method = define;
@@ -56,26 +56,40 @@ var $engine = $engine || {};
 			var v = $context.invokeClassMethod(className,method,args);
 			return f_java2js(v);
 		});
-	}
+	};
 
 	$engine.$import = function(){
 		for(var i in arguments){
 			$context.importJSClass(arguments[i]);
 		}
-	}
+	};
 	
 	$engine.weakObject = function(){
 		var weakObject = new jsa.Object();
 		weakObject.$weakThis = this;
 		return weakObject;
-	}
+	};
 	$engine.isWeak = function(){
 		return this.$weakThis?true:false;
-	}
+	};
 	$engine.self = function(){
 		return this.$weakThis?this.$weakThis:this;
-	}
+	};
 
-}());
+	$engine.invoke = function(){
+    var method = arguments[0];
+    var args = arguments.length<2?[]:Array.prototype.slice.call(arguments,1);
+    var v = $context.invokeMethod(this.$this,method,args);
+		return f_java2js(v);
+  };
+
+  global.$new = function(){
+    var className = arguments[0];
+    var args = arguments.length<2?[]:Array.prototype.slice.call(arguments,1);
+    var nativeObj = $context.newClass(className,args);
+    return new jsa.NativeObject(nativeObj);
+  }
+
+}(this));
 
 

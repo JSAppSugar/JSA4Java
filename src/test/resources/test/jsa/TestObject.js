@@ -132,5 +132,17 @@ $class("test.jsa.TestObject",{
 	testWeakNativeB:function(){
 		var nativeObj = this.weakObj.self();
 		return nativeObj;
+	},
+	testNativeObject:function(){
+		if(JSA.$oc){
+			var nativeJSObj = $new("TestOCObject","init");
+			var weakObj = nativeJSObj.weakObject();
+			return weakObj.self();
+		}else if(JSA.$java){
+			var nativeJSObj = $new("test.java.JavaObject");
+			var weakObj = nativeJSObj.weakObject();
+			return weakObj.self();
+		}
+		return null;
 	}
 });

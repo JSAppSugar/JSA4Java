@@ -190,4 +190,13 @@ public class JSA4JavaTest{
 	        assertNotNull(testJavaObj);
 		}
 	}
+	
+	@Test
+	public void testJSNativeObject() {
+		{
+			JSAObject testObject = jsa.newClass("test.jsa.TestObject");
+		    Object v = testObject.invokeMethod("testNativeObject");
+		    assertEquals("test.java.JavaObject", v.getClass().getName());
+		}
+	}
 }
