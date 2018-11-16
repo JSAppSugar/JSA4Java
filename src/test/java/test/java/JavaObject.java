@@ -68,7 +68,14 @@ public class JavaObject {
 			Number a = (Number)m.get("a");
 			String b = (String)m.get("b");
 			Object o = m.get("o");
-			if(a.intValue() == 1 &&b.equals("1")&&o.getClass().getName().equals("test.java.JavaObject")) {
+			Object f = m.get("f");
+			Object s = m.get("s");
+			if(a.intValue() == 1 
+					&&b.equals("1")
+					&&o.getClass().getName().equals("test.java.JavaObject")
+					&& (f instanceof JSAFunction)
+					&& (s instanceof JSAObject)
+			) {
 				return m;
 			}
 		}

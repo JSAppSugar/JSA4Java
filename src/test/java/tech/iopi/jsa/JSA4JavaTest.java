@@ -129,9 +129,11 @@ public class JSA4JavaTest{
 			Number a = (Number)r.get("a");
 			String b = (String)r.get("b");
 			Object o = r.get("o");
+			Object f = r.get("f");
 			assertEquals(1, a.intValue());
 			assertEquals("1", b);
 			assertEquals("test.java.JavaObject",o.getClass().getName());
+			assertTrue(f instanceof JSAFunction);
 		}
 		{
 			Object[] m = new Object[] {1,"1"};
