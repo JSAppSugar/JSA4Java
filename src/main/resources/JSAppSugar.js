@@ -42,6 +42,36 @@ JSA.$global = this;
 	jsa.Object.prototype.isWeak = engine.isWeak;
 	jsa.Object.prototype.self = engine.self;
 
+	jsa.Object.prototype.watch = function(prop,handler){
+		var propDesc = Object.getOwnPropertyDescriptor(this, prop);
+		if (propDesc && propDesc.get) return;
+		var target = this;
+		var oldValue = target[prop];
+		var newValue = oldValue;
+		var getter = function(){
+			return newValue;
+		};
+		var setter = function(value){
+			oldValue = newValue;
+			newValue = value;
+			handler.call(target, prop, oldValue, newValue);
+		}
+		if (delete target[prop]) {
+			Object.defineProperty(target, prop, {
+        get: getter,
+        set: setter,
+        enumerable: true,
+        configurable: true
+      });
+		}
+	};
+	jsa.Object.prototype.unwatch = function(prop){
+		var value = this[prop];
+		delete this[prop];
+		this[prop] = value;
+	};
+
+
 	var initializing = false;
 
 	var f_$constructor = function(){

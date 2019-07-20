@@ -92,4 +92,8 @@ var $engine = $engine || {};
 
 }(this));
 
+var console = console || {};
+console.log = function(s){
+	$out.println(s);
+}
 
