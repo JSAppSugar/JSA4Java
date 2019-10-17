@@ -51,7 +51,11 @@ $class("test.jsa.TestObject",{
 	},
 	testString:function(s){
 		if((typeof s) == "string"){
-			var r = this.obj.testString("s");
+			var t1 = {
+				v : "s"
+			};
+			var t2 = ""+t1.v;
+			var r = this.obj.testString(t2);
 			if((typeof r) == "string"){
 				return "s";
 			}

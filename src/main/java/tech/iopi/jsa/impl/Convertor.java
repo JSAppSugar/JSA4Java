@@ -3,6 +3,7 @@ package tech.iopi.jsa.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mozilla.javascript.ConsString;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeFunction;
@@ -96,6 +97,8 @@ class Convertor {
 		}else if(object instanceof NativeFunction) {
 			NativeFunction jsFunc = (NativeFunction)object;
 			object = new JSAFunctionJava(jsFunc, jsa);
+		}else if(object instanceof ConsString) {
+			object = ((ConsString) object).toString();
 		}
 		return object;
 	}
