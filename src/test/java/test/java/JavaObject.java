@@ -1,5 +1,9 @@
 package test.java;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import tech.iopi.jsa.JSAFunction;
@@ -117,4 +121,63 @@ public class JavaObject {
 		}
 		return null;
 	}
+	
+	public static class TPR<T>  extends PhantomReference<T>{
+
+		public TPR(T referent, ReferenceQueue<? super T> q) {
+			super(referent, q);
+		}
+		
+		public String a;
+		
+	}
+	
+	public static boolean isRun = true;
+	public static void main(String[] args) throws Exception {
+		System.out.println("begin");
+		final ReferenceQueue<JavaObject> referenceQueue = new ReferenceQueue<JavaObject>();
+		new Thread() {
+            @SuppressWarnings("unchecked")
+			public void run() {
+                while (isRun) {
+                	System.out.println("1");
+					TPR<JavaObject> obj = null;
+					try {
+						obj = (TPR<JavaObject>) referenceQueue.remove();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+                	System.out.println("2");
+                    if (obj != null) {
+                        try {
+                            //Object result = rereferent.get(obj);
+                        	TPR<JavaObject>  result = obj;
+                            System.out.println("gc will collect："
+                                    + result.getClass() + "@"
+                                    + result.a);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }.start();
+        JavaObject jo = new JavaObject();
+        jo._s = "ok";
+        TPR<JavaObject> joWeakRef = new TPR<JavaObject>(jo, referenceQueue);
+        joWeakRef.a = "aa";
+        System.out.println(joWeakRef);
+        jo = null;
+        System.out.println("null");
+        Thread.sleep(3000);
+        System.out.println("before gc");
+        System.gc();
+        System.out.println("end gc");
+        Thread.sleep(3000);
+        System.out.println("null over");
+        isRun = false;
+		System.out.println("end");
+	}
+	
 }

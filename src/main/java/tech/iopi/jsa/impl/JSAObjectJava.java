@@ -2,15 +2,14 @@ package tech.iopi.jsa.impl;
 
 import tech.iopi.jsa.JSAObject;
 
-import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.ScriptableObject;
+import com.eclipsesource.v8.V8Object;
 
 class JSAObjectJava implements JSAObject {
 	
-	protected NativeObject _jsObj;
+	protected V8Object _jsObj;
 	private JSA4Java _jsa;
 	
-	public JSAObjectJava(NativeObject jsObj,JSA4Java jsa) {
+	public JSAObjectJava(V8Object jsObj,JSA4Java jsa) {
 		_jsObj = jsObj;
 		_jsa = jsa;
 	}
@@ -21,7 +20,7 @@ class JSAObjectJava implements JSAObject {
 				arguments[i] = Convertor.java2js(arguments[i], _jsa);
 			}
 		}
-		Object value = ScriptableObject.callMethod(_jsObj, method, arguments);
+		Object value = _jsObj.executeFunction(method, null);
 		return Convertor.js2java(value,_jsa);
 	}
 }
