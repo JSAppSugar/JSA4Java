@@ -1,13 +1,11 @@
 package tech.iopi.jsa;
 
 import org.junit.Test;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import static org.junit.Assert.*;
-
 import java.util.HashMap;
-
 import tech.iopi.jsa.impl.JSA4Java;
-import tech.iopi.jsa.JSAppSugar;
 import tech.iopi.jsa.JSAObject;
 import test.java.JavaObject;
 
@@ -16,13 +14,18 @@ import test.java.JavaObject;
  */
 public class JSA4JavaTest{
 	
-	private static JSAppSugar jsa;
+	private static JSA4Java jsa;
 	
 	@BeforeClass
 	public static void beforeClass() {
 		JSA4Java jsa4Java = new JSA4Java();
 		jsa4Java.startEngine();
 		jsa = jsa4Java;
+	}
+	
+	@AfterClass
+	public static void afterClass() {
+		jsa.stopEngine();
 	}
 	
 	@Test

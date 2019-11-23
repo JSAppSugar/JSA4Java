@@ -90,10 +90,10 @@ var $engine = $engine || {};
     return new jsa.NativeObject(nativeObj);
   }
 
-}(this));
+  global.console = {};
+  global.console.log = function(s){
+  	$out.println(JSON.stringify(s));
+  }
 
-var console = console || {};
-console.log = function(s){
-	$out.println(s);
-}
+}(this));
 

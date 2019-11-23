@@ -1,10 +1,15 @@
 package tech.iopi.jsa.impl;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
 import java.util.HashSet;
+
+import com.eclipsesource.v8.ReferenceHandler;
 import com.eclipsesource.v8.V8;
 import com.eclipsesource.v8.V8Array;
 import com.eclipsesource.v8.V8Function;
 import com.eclipsesource.v8.V8Object;
+import com.eclipsesource.v8.V8Value;
 
 import tech.iopi.jsa.JSAObject;
 import tech.iopi.jsa.JSAppSugar;
@@ -17,12 +22,12 @@ import tech.iopi.jsa.JSClassLoader;
  */
 public class JSA4Java extends Object implements JSAppSugar {
 
-	private V8 v8;
+	protected V8 v8;
 	private JSClassLoader _jsClassLoader;
 	private HashSet<String> _loadedClasses;
 	private V8Function f_newClass;
 	private V8Function f_classFunction;
-	private JSAThread _jsaThread;
+	protected JSAThread _jsaThread;
 
 	public JSA4Java() {
 		_loadedClasses = new HashSet<String>();
@@ -44,7 +49,21 @@ public class JSA4Java extends Object implements JSAppSugar {
 	 */
 	public void stopEngine() {
 		if (v8 != null) {
-			v8.release(true);
+			System.gc();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+			_jsaThread.syncRun(new Runnable() {
+				@Override
+				public void run() {
+					f_newClass.release();
+					f_classFunction.release();
+					v8.release(true);
+				}
+			});
+			v8 = null;
+			System.gc();
 		}
 	}
 
@@ -100,7 +119,6 @@ public class JSA4Java extends Object implements JSAppSugar {
 						v8Out.registerJavaMethod(System.out, "println", "println", new Class<?>[] { String.class });
 						v8.add("$out", v8Out);
 						v8Out.release();
-
 						v8.executeScript(jsa4JScript, "JSA4Java", 0);
 						v8.executeScript(jsaScript, "JSAppSugar", 0);
 
@@ -121,22 +139,23 @@ public class JSA4Java extends Object implements JSAppSugar {
 		}
 	}
 
-	public JSAObject newClass(String className, Object... arguments) {
+	public JSAObject newClass(final String className, final Object... arguments) {
 		this.loadJSClass(className);
-		V8Object jsObj = null;
-		Object jsArgs = Convertor.java2js(arguments, this);
-		Object[] callArgs = { className, jsArgs };
-		V8Array v8Args = new V8Array(v8);
-		// TODO call args
-		for (Object obj : callArgs) {
-			v8Args.push(obj.toString());
-		}
-		jsObj = (V8Object) f_newClass.call(null, v8Args);
-
-		if (jsObj != null) {
-			return new JSAObjectJava(null, this);
-		}
-		return null;
+		final JSA4Java jsa = this;
+		JSAFeature<JSAObject> jsRun = new JSAFeature<JSAObject>() {
+			public void run() {
+				V8Array v8Args = new V8Array(v8);
+				V8Array jsArgs = (V8Array)Convertor.java2js(arguments, jsa);
+				v8Args.push(className);
+				Convertor.pushObject2js(v8Args, jsArgs);
+				Object jso = f_newClass.call(null, v8Args);
+				this.result = (JSAObject)Convertor.js2java(jso, jsa);
+				jsArgs.release();
+				v8Args.release();
+			}
+		};
+		_jsaThread.syncRun(jsRun);
+		return jsRun.result;
 	}
 
 	public Object invokeClassMethod(String className, String method, Object... arguments) {
@@ -154,7 +173,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 		return value;
 	}
 
-	private void loadJSClass(String className) {
+	private void loadJSClass(final String className) {
 		if (!_loadedClasses.contains(className)) {
 			String jsaScript = _jsClassLoader.loadJSClass(className);
 			if (jsaScript == null) {
@@ -164,7 +183,13 @@ public class JSA4Java extends Object implements JSAppSugar {
 				jsaScript = jsaScript.replaceAll("\\$super[ ]*\\(", "this.\\$super\\(\"\\$init\"\\)\\(");
 				jsaScript = jsaScript.replaceAll("(\\$super)[ ]*\\.[ ]*([0-9a-zA-Z\\$_]+)[ ]*\\(",
 						"this\\.$1(\"$2\")\\(");
-				v8.executeScript(jsaScript, className, 0);
+				final String runJsaScript = jsaScript;
+				_jsaThread.syncRun(new Runnable() {
+					@Override
+					public void run() {
+						v8.executeScript(runJsaScript, className, 0);
+					}
+				});
 				_loadedClasses.add(className);
 			}
 		}
@@ -187,7 +212,10 @@ public class JSA4Java extends Object implements JSAppSugar {
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				return ObjectAccessor.constructor(cls, args);
+				Object o = ObjectAccessor.constructor(cls, args);
+				V8Object jso = (V8Object)Convertor.java2js(o, _jsa);
+				jso.registerJavaMethod(o, "toString", "$_", new Class<?>[] {  });
+				return jso;
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}

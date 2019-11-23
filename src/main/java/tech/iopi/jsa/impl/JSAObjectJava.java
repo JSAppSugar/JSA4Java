@@ -2,6 +2,7 @@ package tech.iopi.jsa.impl;
 
 import tech.iopi.jsa.JSAObject;
 
+import com.eclipsesource.v8.V8Array;
 import com.eclipsesource.v8.V8Object;
 
 class JSAObjectJava implements JSAObject {
@@ -14,13 +15,16 @@ class JSAObjectJava implements JSAObject {
 		_jsa = jsa;
 	}
 
-	public Object invokeMethod(String method, Object... arguments) {
-		if(arguments != null) {
-			for(int i=0;i<arguments.length;i++) {
-				arguments[i] = Convertor.java2js(arguments[i], _jsa);
+	public Object invokeMethod(final String method, final Object... arguments) {
+		JSAFeature<Object> jsRun = new JSAFeature<Object>() {
+			public void run() {
+				V8Array jsArgs = (V8Array)Convertor.java2js((Object)arguments, _jsa);
+				Object jso = _jsObj.executeFunction(method, jsArgs);
+				this.result = Convertor.js2java(jso, _jsa);
+				jsArgs.release();
 			}
-		}
-		Object value = _jsObj.executeFunction(method, null);
-		return Convertor.js2java(value,_jsa);
+		};
+		_jsa._jsaThread.syncRun(jsRun);
+		return jsRun.result;
 	}
 }
