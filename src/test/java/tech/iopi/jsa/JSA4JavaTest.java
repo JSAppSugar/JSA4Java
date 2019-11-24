@@ -83,9 +83,12 @@ public class JSA4JavaTest{
 		}
 		{
 			Object obj = new Object();
+			int objHash = obj.hashCode();
 			JSAObject testObject = jsa.newClass("test.jsa.TestObject",obj);
+			obj = null;
+			System.gc();
 			Object a = testObject.invokeMethod("getA");
-			assertEquals(obj, a);
+			assertEquals(objHash, a.hashCode());
 		}
 		{
 			Object obj = jsa.newClass("test.jsa.TestObject","a");

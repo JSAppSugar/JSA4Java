@@ -1,16 +1,10 @@
 package tech.iopi.jsa.impl;
 
-import java.lang.ref.PhantomReference;
-import java.lang.ref.ReferenceQueue;
 import java.util.HashSet;
-
-import com.eclipsesource.v8.ReferenceHandler;
 import com.eclipsesource.v8.V8;
 import com.eclipsesource.v8.V8Array;
 import com.eclipsesource.v8.V8Function;
 import com.eclipsesource.v8.V8Object;
-import com.eclipsesource.v8.V8Value;
-
 import tech.iopi.jsa.JSAObject;
 import tech.iopi.jsa.JSAppSugar;
 import tech.iopi.jsa.JSClassLoader;
@@ -159,19 +153,27 @@ public class JSA4Java extends Object implements JSAppSugar {
 		return jsRun.result;
 	}
 
-	public Object invokeClassMethod(String className, String method, Object... arguments) {
+	public Object invokeClassMethod(final String className, final String method, final Object... arguments) {
 		this.loadJSClass(className);
-		Object value = null;
-//		Context cx = JSA4Java.enterContext();
-//		try {
-//			Object jsArgs = Convertor.java2js(arguments, this);
-//			Object[] callArgs = {className,method,jsArgs};
-//			value = f_classFunction.call(cx, _scope, _scope, callArgs);
-//			value = Convertor.js2java(value,this);
-//		}finally {
-//			Context.exit();
-//		}
-		return value;
+		
+		final JSA4Java self = this;
+		
+		JSAFeature<Object> jsRun = new JSAFeature<Object>() {
+			public void run() {
+				V8Array v8Args = new V8Array(v8);
+				V8Array jsArgs = (V8Array)Convertor.java2js((Object)arguments, self);
+				v8Args.push(className);
+				v8Args.push(method);
+				Convertor.pushObject2js(v8Args, jsArgs);
+				Object jso = f_classFunction.call(null, v8Args);
+				this.result = Convertor.js2java(jso, self);
+				Convertor.releaseV8Value(jso);
+				jsArgs.release();
+				v8Args.release();
+			}
+		};
+		_jsaThread.syncRun(jsRun);
+		return jsRun.result;
 	}
 
 	private void loadJSClass(final String className) {
