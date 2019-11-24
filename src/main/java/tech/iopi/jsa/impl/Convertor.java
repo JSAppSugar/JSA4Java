@@ -139,14 +139,19 @@ class Convertor {
 					}
 				}
 				else {
-					HashMap<String,Object> map = new HashMap<String,Object>();
-					for(String key : jsObj.getKeys()) {
-						Object jsValue = jsObj.get(key);
-						Object value = Convertor.js2java(jsValue,jsa);
-						map.put(key.toString(), value);
-						Convertor.releaseV8Value(jsValue);
+					if(jsObj.contains("$this")) {
+						String javaRef = jsObj.getString("$this");
+						object =  jsa._jsaThread.getJavaReference(javaRef);
+					}else {
+						HashMap<String,Object> map = new HashMap<String,Object>();
+						for(String key : jsObj.getKeys()) {
+							Object jsValue = jsObj.get(key);
+							Object value = Convertor.js2java(jsValue,jsa);
+							map.put(key.toString(), value);
+							Convertor.releaseV8Value(jsValue);
+						}
+						object = map;
 					}
-					object = map;
 				}
 			}
 		}
