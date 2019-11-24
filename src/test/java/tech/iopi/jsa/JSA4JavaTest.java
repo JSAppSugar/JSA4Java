@@ -201,4 +201,12 @@ public class JSA4JavaTest{
 		    assertEquals("test.java.JavaObject", v.getClass().getName());
 		}
 	}
+	
+	@Test
+	public void testPerformance() {
+		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
+		int max = 10000000;
+		int c = ((Number) testObject.invokeMethod("testPerformance", max)).intValue();
+		assertEquals(c,max);
+	}
 }

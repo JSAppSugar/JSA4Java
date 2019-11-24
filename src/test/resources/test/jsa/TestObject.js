@@ -161,5 +161,13 @@ $class("test.jsa.TestObject",{
 			return weakObj.self();
 		}
 		return null;
-	}
+	},
+	testPerformance:function(max){
+		var i = 0;
+		var c = 0;
+		for(i=0;i<max;i++){
+			c++;
+		}
+		return c;
+	},
 });
