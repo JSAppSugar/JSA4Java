@@ -215,7 +215,6 @@ public class JSA4Java extends Object implements JSAppSugar {
 				cls = Class.forName(className);
 				Object o = ObjectAccessor.constructor(cls, args);
 				V8Object jso = (V8Object)Convertor.java2js(o, _jsa);
-				jso.registerJavaMethod(o, "toString", "$_", new Class<?>[] {  });
 				return jso;
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);

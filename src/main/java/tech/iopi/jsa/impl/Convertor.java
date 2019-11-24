@@ -86,8 +86,7 @@ class Convertor {
 			jsValue = object;
 		} else if (object != null) {
 			V8Object javaJsRef = new V8Object(jsa.v8);
-			String javaRef = jsa._jsaThread.addJavaReference(object);
-			javaJsRef.add("$this", javaRef);
+			jsa._jsaThread.addJavaReference(object,javaJsRef);
 			jsValue = javaJsRef;
 		}
 		return jsValue;
@@ -130,7 +129,7 @@ class Convertor {
 					object = new JSAObjectJava(jsObj, jsa);
 				}
 				else if(jsObj.contains("$this")) {
-					
+					object =  jsa._jsaThread.getJavaReference(jsObj.getString("$this"));
 				}
 				else {
 					HashMap<String,Object> map = new HashMap<String,Object>();

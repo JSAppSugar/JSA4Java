@@ -111,7 +111,7 @@ public class JSAThread implements Runnable {
 		}
 	}
 	
-	protected String addJavaReference(Object o) {
+	protected void addJavaReference(Object o,V8Object jso) {
 		String i = o.toString();
 		if(!_javaReference.containsKey(i)) {
 			JavaPhantomReference<Object> r = new JavaPhantomReference<Object>(o,_javaReferenceQueue);
@@ -119,7 +119,8 @@ public class JSAThread implements Runnable {
 			r.j = new WeakReference<Object>(o);
 			_javaReference.put(i, r);
 		}
-		return i;
+		jso.add("$this", i);
+		jso.registerJavaMethod(o, "toString", "$_", new Class<?>[] {  });
 	}
 	
 	protected void addJsReference(Object o,V8Object jso) {
