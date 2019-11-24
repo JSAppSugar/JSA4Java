@@ -1,3 +1,4 @@
+"use strict";
 
 $import(
 	"test.jsa.NativeObject"
@@ -163,8 +164,8 @@ $class("test.jsa.TestObject",{
 		return null;
 	},
 	testPerformance:function(max){
-		var i = 0;
-		var c = 0;
+		let i = 0;
+		let c = 0;
 		for(i=0;i<max;i++){
 			c++;
 		}
