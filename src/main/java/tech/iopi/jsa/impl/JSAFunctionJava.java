@@ -12,8 +12,9 @@ class JSAFunctionJava implements JSAFunction {
 	private JSA4Java _jsa;
 	
 	public JSAFunctionJava(V8Function jsFunc,JSA4Java jsa) {
-		_jsFunc = jsFunc;
+		_jsFunc = jsFunc.twin();
 		_jsa = jsa;
+		jsa._jsaThread.addJsReference(this, _jsFunc);
 	}
 
 	public Object call(Object... arguments) {

@@ -1,8 +1,10 @@
 package tech.iopi.jsa.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.eclipsesource.v8.V8Array;
+import com.eclipsesource.v8.V8Function;
 import com.eclipsesource.v8.V8Object;
 import com.eclipsesource.v8.V8Value;
 
@@ -70,10 +72,10 @@ class Convertor {
 			}
 		} else if (object instanceof JSAObjectJava) {
 			JSAObjectJava jsaObj = (JSAObjectJava) object;
-			jsValue = jsaObj._jsObj;
+			jsValue = jsaObj._jsObj.twin();
 		} else if (object instanceof JSAFunctionJava) {
 			JSAFunctionJava jsaFunc = (JSAFunctionJava) object;
-			jsValue = jsaFunc._jsFunc;
+			jsValue = jsaFunc._jsFunc.twin();
 		} else if (object instanceof String) {
 			jsValue = object;
 		} else if (object instanceof Integer) {
@@ -110,50 +112,40 @@ class Convertor {
 			}
 			object = array;
 		}
+		else if(object instanceof V8Function) {
+			V8Function jsFunc = (V8Function) object;
+			object = new JSAFunctionJava(jsFunc, jsa);
+			jsa._jsaThread.addJsReference(object, jsFunc);
+		}
 		else if(object instanceof V8Object) {
 			V8Object jsObj = (V8Object)object;
 			if(jsObj.contains("constructor")) {
-				object = new JSAObjectJava(jsObj, jsa);
-				jsa._jsaThread.addJsReference(object, jsObj);
+				boolean isClass = false;
+				V8Function c = (V8Function)jsObj.get("constructor");
+				if(c.contains("$name")) {
+					isClass = true;
+				}
+				c.release();
+				if(isClass) {
+					object = new JSAObjectJava(jsObj, jsa);
+				}
+				else if(jsObj.contains("$this")) {
+					
+				}
+				else {
+					HashMap<String,Object> map = new HashMap<String,Object>();
+					for(String key : jsObj.getKeys()) {
+						Object jsValue = jsObj.get(key);
+						Object value = Convertor.js2java(jsValue,jsa);
+						map.put(key.toString(), value);
+						Convertor.releaseV8Value(jsValue);
+					}
+					object = map;
+				}
 			}
 		}
 		
-//	   else if(object instanceof V8Object) {
-//		   V8Object jsObj = (V8Object)object;
-//			boolean isClass = false;
-//			if(jsObj.contains("prototype")) {
-//				
-//			}
-//			Scriptable prototype = jsObj.getPrototype();
-//			Object constructor =  prototype.get("constructor", prototype);
-//			if(constructor instanceof Scriptable) {
-//				if(ScriptableObject.hasProperty((Scriptable)constructor, "$name")) {
-//					isClass = true;
-//				}
-//			}
-//			
-//			if(isClass) {
-//				if(jsObj.has("$this", jsObj)) {
-//					Object wrapThis = jsObj.get("$this", jsObj);
-//					if(wrapThis instanceof NativeJavaObject) {
-//						object = ((NativeJavaObject)wrapThis).unwrap();
-//					}else {
-//						object = wrapThis;
-//					}
-//				}else {
-//					object = new JSAObjectJava(jsObj, jsa);
-//				}
-//			}else {
-//				HashMap<String,Object> map = new HashMap<String,Object>();
-//				for(Object key : jsObj.keySet()) {
-//					Object value = jsObj.get(key);
-//					value = Convertor.js2java(value,jsa);
-//					map.put(key.toString(), value);
-//				}
-//				object = map;
-//			}
-//		}else if(object instanceof NativeArray) {
-//			
+
 //		}else if(object instanceof NativeFunction) {
 //			NativeFunction jsFunc = (NativeFunction)object;
 //			object = new JSAFunctionJava(jsFunc, jsa);

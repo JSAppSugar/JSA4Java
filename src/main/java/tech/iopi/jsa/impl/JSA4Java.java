@@ -148,8 +148,9 @@ public class JSA4Java extends Object implements JSAppSugar {
 				V8Array jsArgs = (V8Array)Convertor.java2js(arguments, jsa);
 				v8Args.push(className);
 				Convertor.pushObject2js(v8Args, jsArgs);
-				Object jso = f_newClass.call(null, v8Args);
+				V8Object jso = (V8Object)f_newClass.call(null, v8Args);
 				this.result = (JSAObject)Convertor.js2java(jso, jsa);
+				jso.release();
 				jsArgs.release();
 				v8Args.release();
 			}
