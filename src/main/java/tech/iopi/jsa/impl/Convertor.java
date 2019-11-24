@@ -118,7 +118,10 @@ class Convertor {
 		}
 		else if(object instanceof V8Object) {
 			V8Object jsObj = (V8Object)object;
-			if(jsObj.contains("constructor")) {
+			if(jsObj.isUndefined()) {
+				object = null;
+			}
+			else if(jsObj.contains("constructor")) {
 				boolean isClass = false;
 				V8Function c = (V8Function)jsObj.get("constructor");
 				if(c.contains("$name")) {

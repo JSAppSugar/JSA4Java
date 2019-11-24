@@ -223,7 +223,8 @@ public class JSA4Java extends Object implements JSAppSugar {
 
 		public Object invokeMethod(V8Object obj, String method, V8Array arguments) {
 			Object[] args = (Object[]) Convertor.js2java(arguments, _jsa);
-			Object value = ObjectAccessor.method(obj, method, args);
+			Object jo = _jsa._jsaThread.getJavaReference(obj.getString("$this"));
+			Object value = ObjectAccessor.method(jo, method, args);
 			return Convertor.java2js(value, _jsa);
 		}
 

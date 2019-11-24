@@ -19,14 +19,14 @@ var $engine = $engine || {};
 	};
 	
 	var f_java2js = function(v){
-		if(v && v["getClass"]){
-			var javaClass = v.getClass().getName();
-			var toJS = typesMapJ2JS[javaClass];
-			if(toJS != undefined){
-				if(toJS == "") v = v+"";
-				else v = v[toJS]();
-			}
-		}
+		// if(v && v["getClass"]){
+		// 	var javaClass = v.getClass().getName();
+		// 	var toJS = typesMapJ2JS[javaClass];
+		// 	if(toJS != undefined){
+		// 		if(toJS == "") v = v+"";
+		// 		else v = v[toJS]();
+		// 	}
+		// }
 		return v;
 	};
 
