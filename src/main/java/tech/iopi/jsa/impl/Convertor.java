@@ -126,10 +126,14 @@ class Convertor {
 				}
 				c.release();
 				if(isClass) {
-					object = new JSAObjectJava(jsObj, jsa);
-				}
-				else if(jsObj.contains("$this")) {
-					object =  jsa._jsaThread.getJavaReference(jsObj.getString("$this"));
+					if(jsObj.contains("$this")) {
+						V8Object jsRef = jsObj.getObject("$this");
+						String javaRef = jsRef.getString("$this");
+						jsRef.release();
+						object =  jsa._jsaThread.getJavaReference(javaRef);
+					}else {
+						object = new JSAObjectJava(jsObj, jsa);
+					}
 				}
 				else {
 					HashMap<String,Object> map = new HashMap<String,Object>();
