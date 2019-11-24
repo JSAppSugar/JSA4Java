@@ -1,5 +1,6 @@
 package tech.iopi.jsa.impl;
 
+import com.eclipsesource.v8.V8Array;
 import com.eclipsesource.v8.V8Function;
 import com.eclipsesource.v8.V8Object;
 
@@ -21,18 +22,22 @@ class JSAFunctionJava implements JSAFunction {
 		return this.apply(null, arguments);
 	}
 
-	public Object apply(JSAObject thisObject, Object... arguments) {
-		if(arguments != null) {
-			for(int i=0;i<arguments.length;i++) {
-				arguments[i] = Convertor.java2js(arguments[i], _jsa);
+	public Object apply(final JSAObject thisObject, final Object... arguments) {
+		JSAFeature<Object> jsRun = new JSAFeature<Object>() {
+			public void run() {
+				V8Array jsArgs = (V8Array)Convertor.java2js((Object)arguments, _jsa);
+				V8Object jsThis = null;
+				if(thisObject instanceof JSAObjectJava) {
+					jsThis = ((JSAObjectJava)thisObject)._jsObj;
+				}
+				Object jso = _jsFunc.call(jsThis, jsArgs);
+				this.result = Convertor.js2java(jso, _jsa);
+				Convertor.releaseV8Value(jso);
+				jsArgs.release();
 			}
-		}
-		V8Object jsThis = null;
-		if(thisObject instanceof JSAObjectJava) {
-			jsThis = ((JSAObjectJava)thisObject)._jsObj;
-		}
-		Object value = _jsFunc.call(jsThis, null);
-		return Convertor.js2java(value,_jsa);
+		};
+		_jsa._jsaThread.syncRun(jsRun);
+		return jsRun.result;
 	}
 
 }
