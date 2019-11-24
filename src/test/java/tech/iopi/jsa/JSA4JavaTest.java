@@ -205,7 +205,7 @@ public class JSA4JavaTest{
 	@Test
 	public void testPerformance() {
 		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
-		int max = 10000000;
+		int max = 100000000;
 		int c = ((Number) testObject.invokeMethod("testPerformance", max)).intValue();
 		assertEquals(c,max);
 	}
