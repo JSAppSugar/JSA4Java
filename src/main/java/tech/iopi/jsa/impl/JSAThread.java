@@ -39,7 +39,7 @@ public class JSAThread implements Runnable {
 					try {
 						obj = (JavaPhantomReference<Object>) _javaReferenceQueue.remove();
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
                     if (obj != null) {
                     	if(obj.js == null) System.out.println("release:"+obj.i);

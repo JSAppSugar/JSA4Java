@@ -209,6 +209,17 @@ public class JSA4JavaTest{
 	}
 	
 	@Test
+	public void testStaticInit() {
+		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
+		HashMap<String,Object> m = new HashMap<String,Object>();
+		m.put("s", "s");
+		Object o = testObject.invokeMethod("testStaticInit",m);
+		System.out.println(o.getClass());
+		JavaObject oo = (JavaObject) o;
+		assertEquals("s", oo.getS());
+	}
+	
+	@Test
 	public void testPerformance() {
 		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
 		int max = 100000000;

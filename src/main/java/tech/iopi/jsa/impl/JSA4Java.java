@@ -25,8 +25,6 @@ public class JSA4Java extends Object implements JSAppSugar {
 
 	public JSA4Java() {
 		_loadedClasses = new HashSet<String>();
-		_jsaThread = new JSAThread();
-		_jsaThread.start();
 	}
 
 	/**
@@ -58,6 +56,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 			});
 			v8 = null;
 			System.gc();
+			_jsaThread.stop();
 		}
 	}
 
@@ -65,7 +64,13 @@ public class JSA4Java extends Object implements JSAppSugar {
 	 * start the engine
 	 */
 	public void startEngine() {
+		_jsaThread = new JSAThread();
+		_jsaThread.start();
 		this.startEngine(new DefaultJSClassLoader());
+	}
+	
+	public void syncRun(Runnable worker) {
+		_jsaThread.syncRun(worker);
 	}
 
 	/**

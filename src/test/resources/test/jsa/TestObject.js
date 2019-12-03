@@ -170,5 +170,13 @@ $class("test.jsa.TestObject",{
 			c++;
 		}
 		return c;
+	},
+	testStaticInit:function(param){
+		let o = test.jsa.NativeObject.$init(param);
+		let s = o.getS();
+		if(s == "s"){
+			return o;
+		}
+		return null;
 	}
 });

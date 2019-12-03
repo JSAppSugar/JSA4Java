@@ -1,6 +1,6 @@
 // MIT License
 
-// Copyright (c) 2018 JSAppSugar
+// Copyright (c) 2019 JSAppSugar
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -166,7 +166,11 @@ JSA.$global = this;
 				if(define.$static){
 					var staticDefine = define.$static;
 					for(var key in staticDefine){
-						JSAClass[key] = engine.$staticFunction(staticDefine[key]["$"+engine.lang]);
+						if(key.charAt(0)=== '$'){
+							JSAClass[key] = engine.$staticInitFunction(staticDefine[key]["$"+engine.lang]);
+						}else{
+							JSAClass[key] = engine.$staticFunction(staticDefine[key]["$"+engine.lang]);
+						}
 					}
 				}
 			}else{

@@ -58,6 +58,18 @@ var $engine = $engine || {};
 		});
 	};
 
+	$engine.$staticInitFunction = function(define){
+		var method = define;
+		return(function(){
+			var className = this.$impl;
+			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
+			var v = $context.invokeClassMethod(className,method,args);
+			return this.fromNative(f_java2js(v));
+		});
+	};
+
+
+
 	$engine.$import = function(){
 		for(var i in arguments){
 			$context.importJSClass(arguments[i]);

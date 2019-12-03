@@ -14,6 +14,10 @@ $class("test.jsa.NativeObject",{
 		staticA:{
 			$java : "staticA",
 			$oc : "staticA"
+		},
+		$init:{
+			$java : "initWithParam",
+			$oc : "initWithParam:"
 		}
 	},
 	getS:{

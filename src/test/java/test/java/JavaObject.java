@@ -11,6 +11,12 @@ public class JavaObject {
 		return "a";
 	}
 	
+	public static JavaObject initWithParam(Map<String,Object> param) {
+		JavaObject o = new JavaObject();
+		o._s = param.get("s").toString();
+		return o;
+	}
+	
 	public JavaObject() {
 		
 	}
