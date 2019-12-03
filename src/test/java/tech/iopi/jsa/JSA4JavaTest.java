@@ -19,6 +19,7 @@ public class JSA4JavaTest{
 	@BeforeClass
 	public static void beforeClass() {
 		JSA4Java jsa4Java = new JSA4Java();
+		jsa4Java.setMainthread(new TestMainThread());
 		jsa4Java.startEngine();
 		jsa = jsa4Java;
 	}
@@ -217,6 +218,13 @@ public class JSA4JavaTest{
 		System.out.println(o.getClass());
 		JavaObject oo = (JavaObject) o;
 		assertEquals("s", oo.getS());
+	}
+	
+	@Test
+	public void testWorkInMain() {
+		JSAObject testObject = jsa.newClass("test.jsa.TestObject");
+		testObject.invokeMethod("testWorkInMain");
+		assertTrue(true);
 	}
 	
 	@Test

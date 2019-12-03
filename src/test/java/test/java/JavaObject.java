@@ -17,6 +17,10 @@ public class JavaObject {
 		return o;
 	}
 	
+	public void workInMain() {
+		System.out.println("workInMain");
+	}
+	
 	public JavaObject() {
 		
 	}

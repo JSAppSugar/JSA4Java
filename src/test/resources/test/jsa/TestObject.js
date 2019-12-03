@@ -178,5 +178,9 @@ $class("test.jsa.TestObject",{
 			return o;
 		}
 		return null;
+	},
+	testWorkInMain:function(){
+		let o = new test.jsa.NativeObject();
+		o.workInMain();
 	}
 });

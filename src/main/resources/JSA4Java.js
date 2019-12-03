@@ -39,11 +39,12 @@ var $engine = $engine || {};
 		});
 	};
 
-	$engine.$function = function(define){
+	$engine.$function = function(define,inMain){
 		var method = define;
+		let runInMain = inMain;
 		return (function(){
 			var args = arguments.length==1?[arguments[0]]:Array.apply(null,arguments);
-			var v = $context.invokeMethod(this.$this,method,args);
+			var v = $context.invokeMethod(inMain,this.$this,method,args);
 			return f_java2js(v);
 		});
 	};

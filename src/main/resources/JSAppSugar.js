@@ -158,7 +158,12 @@ JSA.$global = this;
 				JSAClass.prototype.$init = engine.$init(define["$init"]?define["$init"]['$'+engine.lang]:undefined);
 				for(var key in define){
 					if(key.charAt(0)==='$') continue;
-					JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang]);
+					if(define[key]["$setView"]){
+						JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang],true);
+					}
+					else{
+						JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang],false);
+					}
 				}
 				JSAClass.fromNative = function(obj){
 					return new JSAClass({"$native":obj});

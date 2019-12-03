@@ -8,6 +8,7 @@ import com.eclipsesource.v8.V8Object;
 import tech.iopi.jsa.JSAObject;
 import tech.iopi.jsa.JSAppSugar;
 import tech.iopi.jsa.JSClassLoader;
+import tech.iopi.jsa.android.Mainthread;
 
 /**
  * 
@@ -22,6 +23,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 	private V8Function f_newClass;
 	private V8Function f_classFunction;
 	protected JSAThread _jsaThread;
+	private Mainthread _mt = null;
 
 	public JSA4Java() {
 		_loadedClasses = new HashSet<String>();
@@ -34,6 +36,10 @@ public class JSA4Java extends Object implements JSAppSugar {
 	 */
 	public void setJSClassLoader(JSClassLoader loader) {
 		_jsClassLoader = loader;
+	}
+	
+	public void setMainthread(Mainthread mt) {
+		_mt = mt;
 	}
 
 	/**
@@ -108,7 +114,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 						v8Context.registerJavaMethod(context, "newClass", "newClass",
 								new Class<?>[] { String.class, V8Array.class });
 						v8Context.registerJavaMethod(context, "invokeMethod", "invokeMethod",
-								new Class<?>[] { V8Object.class, String.class, V8Array.class });
+								new Class<?>[] {Boolean.class, V8Object.class, String.class, V8Array.class });
 						v8Context.registerJavaMethod(context, "invokeClassMethod", "invokeClassMethod",
 								new Class<?>[] { String.class, String.class, V8Array.class });
 						v8.add("$context", v8Context);
@@ -228,11 +234,21 @@ public class JSA4Java extends Object implements JSAppSugar {
 			}
 		}
 
-		public Object invokeMethod(V8Object obj, String method, V8Array arguments) {
-			Object[] args = (Object[]) Convertor.js2java(arguments, _jsa);
-			Object jo = _jsa._jsaThread.getJavaReference(obj.getString("$this"));
-			Object value = ObjectAccessor.method(jo, method, args);
-			return Convertor.java2js(value, _jsa);
+		public Object invokeMethod(Boolean inMain,V8Object obj, final String method, V8Array arguments) {
+			final Object[] args = (Object[]) Convertor.js2java(arguments, _jsa);
+			final Object jo = _jsa._jsaThread.getJavaReference(obj.getString("$this"));
+			if(inMain) {
+				_jsa._mt.asyncRun(jo, new Runnable() {
+					@Override
+					public void run() {
+						ObjectAccessor.method(jo, method, args);
+					}
+				});
+				return null;
+			}else {
+				Object value = ObjectAccessor.method(jo, method, args);
+				return Convertor.java2js(value, _jsa);
+			}
 		}
 
 		public Object invokeClassMethod(String className, String method, V8Array arguments) {

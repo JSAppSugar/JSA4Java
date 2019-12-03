@@ -67,5 +67,10 @@ $class("test.jsa.NativeObject",{
 	testJSAFunction:{
 		$java : "testJSAFunction",
 		$oc : "testJSAFunction:"
+	},
+	workInMain:{
+		$setView:true,
+		$java : "workInMain",
+		$oc : "workInMain"
 	}
 });
