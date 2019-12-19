@@ -215,7 +215,6 @@ public class JSA4JavaTest{
 		HashMap<String,Object> m = new HashMap<String,Object>();
 		m.put("s", "s");
 		Object o = testObject.invokeMethod("testStaticInit",m);
-		System.out.println(o.getClass());
 		JavaObject oo = (JavaObject) o;
 		assertEquals("s", oo.getS());
 	}

@@ -153,9 +153,18 @@ JSA.$global = this;
 			JSAClass.prototype.$super = f_$super;
 
 			var SuperClassProto = SuperClass.prototype;
-			if(define["$implementation"]){
-				JSAClass.$impl = define["$implementation"]['$'+engine.lang];
-				JSAClass.prototype.$init = engine.$init(define["$init"]?define["$init"]['$'+engine.lang]:undefined);
+			let isInterface = false;
+			if(define["$interface"]){
+				isInterface = true;
+			}
+			if(define["$implementation"] || isInterface){
+				if(isInterface){
+					JSAClass.$impl = "$interface";
+					JSAClass.prototype.$init = engine.$init(undefined);
+				}else{
+					JSAClass.$impl = define["$implementation"]['$'+engine.lang];
+					JSAClass.prototype.$init = engine.$init(define["$init"]?define["$init"]['$'+engine.lang]:undefined);
+				}
 				for(var key in define){
 					if(key.charAt(0)==='$') continue;
 					if(define[key]["$main"]){
@@ -168,7 +177,7 @@ JSA.$global = this;
 				JSAClass.fromNative = function(obj){
 					return new JSAClass({"$native":obj});
 				}
-				if(define.$static){
+				if(!isInterface && define.$static){
 					var staticDefine = define.$static;
 					for(var key in staticDefine){
 						if(key.charAt(0)=== '$'){

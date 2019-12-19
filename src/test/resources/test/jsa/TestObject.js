@@ -1,7 +1,8 @@
 "use strict";
 
 $import(
-	"test.jsa.NativeObject"
+	"test.jsa.NativeObject",
+	"test.jsa.NativeInterface"
 	);
 
 $class("test.jsa.TestObject",{
@@ -144,7 +145,7 @@ $class("test.jsa.TestObject",{
 		return null;
 	},
 	testWeakNativeA:function(obj){
-		var nativeObj = test.jsa.NativeObject.fromNative(obj);
+		var nativeObj = test.jsa.NativeInterface.fromNative(obj);
 		this.weakObj = nativeObj.weakObject();
 	},
 	testWeakNativeB:function(){
