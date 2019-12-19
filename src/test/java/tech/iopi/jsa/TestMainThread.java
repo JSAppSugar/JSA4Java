@@ -1,11 +1,11 @@
 package tech.iopi.jsa;
 
-import tech.iopi.jsa.android.Mainthread;
+import tech.iopi.jsa.android.MainThread;
 
-public class TestMainThread implements Mainthread {
+public class TestMainThread implements MainThread {
 
 	@Override
-	public void asyncRun(Object o, Runnable r) {
+	public void asyncRun(Runnable r) {
 		r.run();
 	}
 

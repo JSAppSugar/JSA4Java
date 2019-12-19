@@ -8,7 +8,7 @@ import com.eclipsesource.v8.V8Object;
 import tech.iopi.jsa.JSAObject;
 import tech.iopi.jsa.JSAppSugar;
 import tech.iopi.jsa.JSClassLoader;
-import tech.iopi.jsa.android.Mainthread;
+import tech.iopi.jsa.android.MainThread;
 
 /**
  * 
@@ -23,7 +23,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 	private V8Function f_newClass;
 	private V8Function f_classFunction;
 	protected JSAThread _jsaThread;
-	private Mainthread _mt = null;
+	private MainThread _mt = null;
 
 	public JSA4Java() {
 		_loadedClasses = new HashSet<String>();
@@ -38,7 +38,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 		_jsClassLoader = loader;
 	}
 	
-	public void setMainthread(Mainthread mt) {
+	public void setMainThread(MainThread mt) {
 		_mt = mt;
 	}
 
@@ -238,7 +238,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 			final Object[] args = (Object[]) Convertor.js2java(arguments, _jsa);
 			final Object jo = _jsa._jsaThread.getJavaReference(obj.getString("$this"));
 			if(inMain) {
-				_jsa._mt.asyncRun(jo, new Runnable() {
+				_jsa._mt.asyncRun(new Runnable() {
 					@Override
 					public void run() {
 						ObjectAccessor.method(jo, method, args);

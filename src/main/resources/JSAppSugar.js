@@ -158,7 +158,7 @@ JSA.$global = this;
 				JSAClass.prototype.$init = engine.$init(define["$init"]?define["$init"]['$'+engine.lang]:undefined);
 				for(var key in define){
 					if(key.charAt(0)==='$') continue;
-					if(define[key]["$setView"]){
+					if(define[key]["$main"]){
 						JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang],true);
 					}
 					else{

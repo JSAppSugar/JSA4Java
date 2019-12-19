@@ -19,7 +19,7 @@ public class JSA4JavaTest{
 	@BeforeClass
 	public static void beforeClass() {
 		JSA4Java jsa4Java = new JSA4Java();
-		jsa4Java.setMainthread(new TestMainThread());
+		jsa4Java.setMainThread(new TestMainThread());
 		jsa4Java.startEngine();
 		jsa = jsa4Java;
 	}
