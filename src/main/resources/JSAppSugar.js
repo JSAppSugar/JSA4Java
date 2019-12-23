@@ -124,6 +124,11 @@ JSA.$global = this;
 		currentPackage[packages[l]] = newClass;
 	};
 
+	JSA.$interface = function(className,define){
+		define["$interface"] = true;
+		JSA.$class(className,define);
+	}
+
 	JSA.$class = function(className,define){
 		if (className != null && typeof className !== 'string') {
 			throw new Error("[$class] Invalid class name '" + className + "' specified, must be a non-empty string");
@@ -249,6 +254,7 @@ JSA.$global = this;
 }($engine));
 
 $class = JSA.$class;
+$interface = JSA.$interface;
 $import = JSA.$import;
 $newClass = JSA.$newClass;
 $classFunction = JSA.$classFunction;

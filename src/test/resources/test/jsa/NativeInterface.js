@@ -1,6 +1,5 @@
 
-$class("test.jsa.NativeInterface",{
-	$interface:true,
+$interface("test.jsa.NativeInterface",{
 	getS:{
 		$java : "getS",
 		$oc : "getS"
