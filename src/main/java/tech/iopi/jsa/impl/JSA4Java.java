@@ -70,8 +70,6 @@ public class JSA4Java extends Object implements JSAppSugar {
 	 * start the engine
 	 */
 	public void startEngine() {
-		_jsaThread = new JSAThread();
-		_jsaThread.start();
 		this.startEngine(new DefaultJSClassLoader());
 	}
 	
@@ -85,6 +83,8 @@ public class JSA4Java extends Object implements JSAppSugar {
 	 * @param loader A implementation of JSClassLoader.
 	 */
 	public void startEngine(JSClassLoader loader) {
+		_jsaThread = new JSAThread();
+		_jsaThread.start();
 		if (v8 == null) {
 			{
 				JSAFeature<V8> jsRun = new JSAFeature<V8>() {
