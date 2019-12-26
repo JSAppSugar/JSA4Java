@@ -183,6 +183,10 @@ public class JSA4JavaTest{
 			assertEquals("aa", a);
 		}
 		{
+			String a = (String)jsa.classStaticVariable("test.jsa.TestObject", "staticA");
+			assertEquals("a", a);
+		}
+		{
 			JSAObject test = jsa.newClass("test.jsa.TestObject");
 			String r = (String)test.invokeMethod("testNativeStatic");
 			assertEquals("a", r);

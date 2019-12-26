@@ -233,6 +233,13 @@ JSA.$global = this;
 		return o;
 	};
 	JSA.$import = engine.$import;
+	JSA.$classStaticVariable = function(className,variable){
+		var cls = f_findClass(className);
+		if(cls && cls[variable]){
+			return cls[variable];
+		}
+		return null;
+	};
 	JSA.$classFunction = function(className,methodName,args){
 		var cls = f_findClass(className);
 		if(cls && cls[methodName]){
@@ -258,4 +265,5 @@ $interface = JSA.$interface;
 $import = JSA.$import;
 $newClass = JSA.$newClass;
 $classFunction = JSA.$classFunction;
+$classStaticVariable = JSA.$classStaticVariable;
 delete $engine;

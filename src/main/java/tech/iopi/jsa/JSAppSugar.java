@@ -27,4 +27,13 @@ public interface JSAppSugar
 	 * @return The return value of the function call.
 	 */
 	public Object invokeClassMethod(String className,String method,Object... arguments);
+	
+	/**
+	 * Get the static variable of a JSA class
+	 * 
+	 * @param className The name of a JSA class
+	 * @param variable The name of a static variable
+	 * @return
+	 */
+	public Object classStaticVariable(String className,String variable);
 }

@@ -16,7 +16,7 @@ $class("test.jsa.TestObject",{
 	$static:{
 		staticA:"a",
 		staticGetA(a){
-			return this.staticA+a;
+			return test.jsa.TestObject.staticA+a;
 		}
 	},
 	getA:function(){

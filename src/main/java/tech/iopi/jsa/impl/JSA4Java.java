@@ -22,6 +22,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 	private HashSet<String> _loadedClasses;
 	private V8Function f_newClass;
 	private V8Function f_classFunction;
+	private V8Function f_classStaticVariable;
 	protected JSAThread _jsaThread;
 	private MainThread _mt = null;
 
@@ -57,6 +58,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 				public void run() {
 					f_newClass.release();
 					f_classFunction.release();
+					f_classStaticVariable.release();
 					v8.release(true);
 				}
 			});
@@ -129,14 +131,17 @@ public class JSA4Java extends Object implements JSAppSugar {
 
 						V8Function f_newClass = (V8Function) v8.getObject("$newClass");
 						V8Function f_classFunction = (V8Function) v8.getObject("$classFunction");
+						V8Function f_classStaticVariable = (V8Function) v8.getObject("$classStaticVariable");
 						this.set("f_newClass", f_newClass);
 						this.set("f_classFunction", f_classFunction);
+						this.set("f_classStaticVariable", f_classStaticVariable);
 					}
 				};
 				_jsaThread.syncRun(jsRun);
 
 				f_newClass = (V8Function) jsRun.get("f_newClass");
 				f_classFunction = (V8Function) jsRun.get("f_classFunction");
+				f_classStaticVariable = (V8Function) jsRun.get("f_classStaticVariable");
 			}
 			if (_jsClassLoader == null) {
 				_jsClassLoader = loader;
@@ -157,6 +162,24 @@ public class JSA4Java extends Object implements JSAppSugar {
 				this.result = (JSAObject)Convertor.js2java(jso, jsa);
 				jso.release();
 				jsArgs.release();
+				v8Args.release();
+			}
+		};
+		_jsaThread.syncRun(jsRun);
+		return jsRun.result;
+	}
+	
+	public Object classStaticVariable(final String className,final String variable) {
+		this.loadJSClass(className);
+		final JSA4Java self = this;
+		JSAFeature<Object> jsRun = new JSAFeature<Object>() {
+			public void run() {
+				V8Array v8Args = new V8Array(v8);
+				v8Args.push(className);
+				v8Args.push(variable);
+				Object jso = f_classStaticVariable.call(null, v8Args);
+				this.result = Convertor.js2java(jso, self);
+				Convertor.releaseV8Value(jso);
 				v8Args.release();
 			}
 		};
