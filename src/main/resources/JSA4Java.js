@@ -96,6 +96,7 @@ var $engine = $engine || {};
 		return f_java2js(v);
   };
 
+  //创建原生类对象
   global.$new = function(){
     var className = arguments[0];
     var args = arguments.length<2?[]:Array.prototype.slice.call(arguments,1);

@@ -6,7 +6,6 @@ import org.junit.BeforeClass;
 import static org.junit.Assert.*;
 import java.util.HashMap;
 import tech.iopi.jsa.impl.JSA4Java;
-import tech.iopi.jsa.JSAObject;
 import test.java.JavaObject;
 
 /**

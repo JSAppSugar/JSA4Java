@@ -158,7 +158,7 @@ JSA.$global = this;
 			JSAClass.prototype.$super = f_$super;
 
 			var SuperClassProto = SuperClass.prototype;
-			let isInterface = false;
+			var isInterface = false;
 			if(define["$interface"]){
 				isInterface = true;
 			}
@@ -172,7 +172,7 @@ JSA.$global = this;
 				}
 				for(var key in define){
 					if(key.charAt(0)==='$') continue;
-					if(define[key]["$main"]){
+					if(define[key]["$setView"]){
 						JSAClass.prototype[key] = engine.$function(define[key]["$"+engine.lang],true);
 					}
 					else{
@@ -224,8 +224,12 @@ JSA.$global = this;
 			f_applyClass(className,JSAClass);
 		}
 	};
-	JSA.$newClass = function(className,args){
+	JSA.$newJs = function(className,args){
 		var cls = f_findClass(className);
+		if(!cls){
+			JSA.$import(className);
+			cls = f_findClass(className);
+		}
 		var o = undefined;
 		if(cls){
 			o = new cls({"$arguments":args});
@@ -242,6 +246,10 @@ JSA.$global = this;
 	};
 	JSA.$classFunction = function(className,methodName,args){
 		var cls = f_findClass(className);
+		if(!cls){
+			JSA.$import(className);
+			cls = f_findClass(className);
+		}
 		if(cls && cls[methodName]){
 			return cls[methodName].apply(cls,args);
 		}
@@ -263,7 +271,7 @@ JSA.$global = this;
 $class = JSA.$class;
 $interface = JSA.$interface;
 $import = JSA.$import;
-$newClass = JSA.$newClass;
+$newJs = JSA.$newJs;
 $classFunction = JSA.$classFunction;
 $classStaticVariable = JSA.$classStaticVariable;
 delete $engine;

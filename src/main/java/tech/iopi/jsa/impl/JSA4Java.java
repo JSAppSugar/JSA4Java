@@ -129,7 +129,7 @@ public class JSA4Java extends Object implements JSAppSugar {
 						v8.executeScript(jsa4JScript, "JSA4Java", 0);
 						v8.executeScript(jsaScript, "JSAppSugar", 0);
 
-						V8Function f_newClass = (V8Function) v8.getObject("$newClass");
+						V8Function f_newClass = (V8Function) v8.getObject("$newJs");
 						V8Function f_classFunction = (V8Function) v8.getObject("$classFunction");
 						V8Function f_classStaticVariable = (V8Function) v8.getObject("$classStaticVariable");
 						this.set("f_newClass", f_newClass);
