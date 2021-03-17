@@ -92,7 +92,7 @@ var $engine = $engine || {};
 	$engine.invoke = function(){
     var method = arguments[0];
     var args = arguments.length<2?[]:Array.prototype.slice.call(arguments,1);
-    var v = $context.invokeMethod(this.$this,method,args);
+    var v = $context.invokeMethod(false,this.$this,method,args);
 		return f_java2js(v);
   };
 
