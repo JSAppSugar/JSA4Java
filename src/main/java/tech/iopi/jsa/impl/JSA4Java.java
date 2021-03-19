@@ -269,7 +269,13 @@ public class JSA4Java extends Object implements JSAppSugar {
 				});
 				return null;
 			}else {
-				Object value = ObjectAccessor.method(jo, method, args);
+				Object value = null;
+				try {
+					value = ObjectAccessor.method(jo, method, args);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+				
 				return Convertor.java2js(value, _jsa);
 			}
 		}
