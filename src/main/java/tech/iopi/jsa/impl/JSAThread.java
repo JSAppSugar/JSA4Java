@@ -93,20 +93,14 @@ public class JSAThread implements Runnable {
 	@Override
 	public void run() {
 		while (_isRun) {
-			if (_worker != null) {
-				try {
-					_worker.run();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			synchronized (_thread) {
-				try {
+			try {
+				synchronized (_thread) {
+					if (_worker != null) _worker.run();
 					_thread.notifyAll();
 					_thread.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
